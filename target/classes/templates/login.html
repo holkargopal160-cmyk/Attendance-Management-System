@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance Management System - Login & Sign Up</title>
+<style>
+*{
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+font-family: Arial, sans-serif;
+}
+body {
+background-color: #1a252f; /* Purana Dark Slate Background */
+color: #ffffff;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+padding: 20px;
+}
+/* Top Header (Matching other pages) */
+.main-header {
+text-align: center;
+font-size: 28px;
+margin-bottom: 25px;
+font-weight: bold;
+letter-spacing: 1px;
+text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+/* Centered Form Card */
+.auth-card {
+background-color: #2c3e50; /* Purana Window Panel Background */
+border: 2px solid #34495e;
+border-radius: 8px;
+width: 100%;
+max-width: 420px;
+padding: 30px;
+box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+}
+/* Headings (Login / Sign Up) */
+.section-title {
+text-align: center;
+font-size: 26px;
+font-weight: bold;
+color: #3498db; /* Green ki jagah matching system blue color */
+margin-bottom: 20px;
+letter-spacing: 1px;
+}.signup-section {
+margin-top: 30px;
+border-top: 1px dashed #34495e;
+padding-top: 25px;
+}
+/* Input Group */
+.input-group {
+margin-bottom: 15px;
+position: relative;
+}
+.input-group input {
+width: 100%;
+background-color: #1a252f; /* Dark background matching the theme */
+border: 1.5px solid #3498db; /* Green borders replaced with theme blue */
+color: #ffffff;
+padding: 12px 15px;
+font-size: 14px;
+border-radius: 6px;
+outline: none;
+transition: all 0.3s ease;
+}
+/* Input focus effect */
+.input-group input:focus {
+border-color: #5dade2;
+box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
+}
+/* Placeholder Color styling */
+.input-group input::placeholder {
+color: #7f8c8d;
+}
+/* Action Buttons (Login / Create Account) */
+.submit-btn {
+width: 100%;
+background-color: #3498db; /* Matching Blue Button */
+color: #ffffff;
+border: none;
+padding: 12px;
+font-size: 15px;
+font-weight: bold;
+border-radius: 6px;
+cursor: pointer;
+transition: background-color 0.2s, transform 0.1s;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+margin-top: 5px;
+}
+.submit-btn:hover {
+background-color: #2980b9;
+}
+.submit-btn:active {
+transform: scale(0.98);
+}/* Forgot Password Link */
+.forgot-link {
+display: block;
+text-align: center;
+margin-top: 15px;
+color: #bdc3c7;
+text-decoration: none;
+font-size: 13px;
+transition: color 0.2s;
+}
+.forgot-link:hover {
+color: #3498db;
+text-decoration: underline;
+}
+</style>
+</head>
+<body>
+<!-- Header matching your layout -->
+<div class="main-header">Attendance Management System</div>
+<!-- Auth Container -->
+<div class="auth-card">
+<!-- LOGIN SECTION -->
+<form id="myDirectloginForm" method="POST" action="/login">
+<div class="section-title">Login</div>
+<div class="input-group">
+<input type="text" id="loginUsername" name="username" placeholder="Username">
+</div>
+<div class="input-group">
+<input type="password" id="loginpassword" name="password" placeholder="Password">
+</div>
+<button type="submit" name="login-submit" class="submit-btn">LOGIN</button>
+<a href="#" class="forgot-link">Forgot Password?</a>
+</form>
+<!-- SIGN UP SECTION -->
+<div class="signup-section">
+<form id="signupForm" method="POST" action="/register">
+<div class="section-title">Sign Up</div>
+<div class="input-group">
+<input type="text" id="regName" name="name" placeholder="Full Name" required>
+</div>
+<div class="input-group">
+<input type="text" id="regUsername" name="username" placeholder="Username" required>
+</div>
+<div class="input-group">
+<input type="password" id="regPassword" name="password" placeholder="Password" required>
+</div>
+<button type="submit" class="submit-btn">Create Account</button>
+</form>
+</div>
+</div>
+<!-- JavaScript to handle basic actions -->
+<script>
+function handleLogin(event) {
+// event.preventDefault():
+//const user = document.getElementById('loginUsername').value;
+//const pass = document.getElementById('loginPassword').value;
+// Demo Action
+//alert("Login Processing for User: " + user);
+//}
+function handleSignUp(event) {
+//event.preventDefault();
+const user = document.getElementById('regUsername').value;
+const email = document.getElementById('regEmail').value;
+// Demo Action
+alert("Account Creation Requested for: " + user + " (" + email + ")");
+}
+</script>
+</body>
+</html>

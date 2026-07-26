@@ -1,0 +1,442 @@
+Chf
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance Management System - Teacher</title>
+<!-- FontAwesome icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #0b132b, #1c2541, #3a506b);
+color: #fff;
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+}
+/* Top Center Title */
+.top-header {
+width: 100%;
+text-align: center;
+padding: 20px 0 10px 0;
+font-size: 32px;
+font-weight: 800;
+color: #ffffff;
+letter-spacing: 1px;
+text-shadow: 0px 3px 8px rgba(0, 0, 0, 0.6);
+}
+.container {
+display: flex;
+flex: 1;
+padding: 10px 20px 20px 20px;
+gap: 20px;
+}
+/* Sidebar Styling */
+.sidebar {
+width: 220px;
+padding: 10px;
+display: flex;
+flex-direction: column;
+gap: 12px;
+}
+.admin-panel-title {
+color: #94a3b8;font-size: 13px;
+font-weight: 700;
+letter-spacing: 1.5px;
+margin-bottom: 8px;
+text-transform: uppercase;
+}
+.nav-btn {
+background: rgba(255, 255, 255, 0.9);
+color: #1e293b;
+text-decoration: none;
+padding: 12px 18px;
+border-radius: 6px;
+font-weight: bold;
+font-size: 14px;
+text-align: left;
+display: block;
+box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+transition: all 0.2s ease-in-out;
+letter-spacing: 0.5px;
+}
+.nav-btn.active, .nav-btn:hover {
+background: #cbd5e1;
+transform: translateX(3px);
+}
+/* Main Content Area */
+.main-content {
+flex: 1;
+display: flex;
+flex-direction: column;
+gap: 15px;
+}
+/* TEACHER CARD BOX CONTAINER WITH PROPER LABELLING */
+.card-box {
+background: rgba(255, 255, 255, 0.05);
+border: 1px solid rgba(255, 255, 255, 0.1);
+border-radius: 8px;
+box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+overflow: hidden;
+}
+/* Proper Label Header */
+.card-header {
+background: rgba(255, 255, 255, 0.08);
+padding: 12px 20px;
+font-size: 16px;
+font-weight: bold;
+display: flex;
+align-items: center;
+gap: 10px;
+color: #ffffff;
+border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.card-body {
+padding: 25px 20px;}
+/* Label and Input Alignment Grid */
+.form-grid {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 18px 40px;
+}
+.form-group {
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+.form-group label {
+font-weight: 600;
+font-size: 14px;
+color: #e2e8f0;
+width: 35%;
+}
+.form-group input, .form-group select {
+width: 62%;
+padding: 8px 12px;
+border-radius: 4px;
+border: 1px solid #475569;
+background: rgba(255, 255, 255, 0.95);
+color: #000;
+font-size: 14px;
+outline: none;
+}
+.form-group input.read-only-id {
+background: rgba(255, 255, 255, 0.2);
+color: #fbbf24;
+font-weight: bold;
+border: none;
+}
+/* Action Buttons Row */
+.action-buttons {
+display: flex;
+gap: 25px;
+margin: 25px 0 10px 0;
+justify-content: center;
+}
+.action-btn {
+background: none;
+border: none;
+color: #fff;
+font-size: 15px;
+font-weight: bold;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 8px;
+padding: 8px 16px;border-radius: 5px;
+transition: 0.2s;
+}
+.btn-add { color: #2ea44f; }
+.btn-remove { color: #f85149; }
+.btn-update { color: #e3b341; }
+.btn-clear { color: #38bdf8; }
+.btn-view { color: #22c55e; }
+.action-btn:hover {
+background: rgba(255, 255, 255, 0.1);
+transform: translateY(-2px);
+}
+/* Search Box Container */
+.search-container {
+margin-bottom: 10px;
+display: none;
+}
+.search-input {
+width: 100%;
+padding: 10px 15px;
+border-radius: 6px;
+border: 1px solid #38bdf8;
+background: #0f172a;
+color: #fff;
+font-size: 14px;
+outline: none;
+}
+/* Custom Horizontal and Vertical Scrollable Table */
+.table-container {
+overflow: auto;
+max-height: 300px;
+background: rgba(255, 255, 255, 0.03);
+border-radius: 8px;
+padding: 10px;
+border: 1px solid rgba(255, 255, 255, 0.1);
+}
+/* Custom Scrollbar */
+.table-container::-webkit-scrollbar {
+width: 8px;
+height: 8px;
+}
+.table-container::-webkit-scrollbar-thumb {
+background: rgba(255, 255, 255, 0.25);
+border-radius: 4px;
+}
+.table-container::-webkit-scrollbar-thumb:hover {
+background: rgba(255, 255, 255, 0.4);
+}
+.data-table {
+width: 100%;
+border-collapse: collapse;text-align: left;
+font-size: 14px;
+white-space: nowrap;
+}
+.data-table, .data-table th, .data-table td {
+border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+.data-table th {
+background: rgba(255, 255, 255, 0.12);
+padding: 10px 12px;
+color: #93c5fd;
+font-weight: bold;
+position: sticky;
+top: 0;
+z-index: 2;
+}
+.data-table td {
+padding: 8px 12px;
+}
+.data-table tbody tr {
+cursor: pointer;
+transition: background 0.2s;
+}
+.data-table tbody tr:hover {
+background-color: rgba(56, 189, 248, 0.2) !important;
+}
+.data-table tbody tr.selected-row {
+background-color: rgba(46, 164, 79, 0.4) !important;
+}
+</style>
+</head>
+<body>
+<!-- Header Title -->
+<div class="top-header">
+Attendance Management System
+</div>
+<div class="container">
+<!-- Sidebar Navigation -->
+<div class="sidebar">
+<div class="admin-panel-title">ADMIN PANEL</div>
+<a href="/teacher" class="nav-btn">DASHBOARD</a>
+<a href="/teacher" class="nav-btn active">TEACHER</a>
+<a href="/student" class="nav-btn">STUDENT</a>
+<a href="/batch" class="nav-btn">BATCH</a>
+<a href="/report" class="nav-btn">REPORT</a>
+<a href="/login" class="nav-btn">EXIT</a>
+</div>
+<!-- Main Content -->
+<div class="main-content"><!-- PROPER LABELED CARD BOX FOR TEACHER FORM -->
+<div class="card-box">
+<div class="card-header">
+<i class="fa-solid fa-address-card"></i> New Teacher
+</div>
+<div class="card-body">
+<div class="form-grid">
+<!-- Left Column -->
+<div class="form-group">
+<label>Teacher ID</label>
+<input type="text" id="teacherId" value="10007" class="read-only-id">
+</div>
+<div class="form-group">
+<label>Teacher Name</label>
+<input type="text" id="teacherName" placeholder="Enter teacher name">
+</div>
+<div class="form-group">
+<label>User Name</label>
+<input type="text" id="userName" placeholder="Enter username">
+</div>
+<div class="form-group">
+<label>Password</label>
+<input type="password" id="teacherPassword" placeholder="Enter password">
+</div>
+<div class="form-group">
+<label>Teacher Status</label>
+<select id="teacherStatus">
+<option value="absent">absent</option>
+<option value="present">present</option>
+<option value="true">true</option>
+<option value="false">false</option>
+</select>
+</div>
+<div class="form-group">
+<label>Date</label>
+<input type="text" id="teacherDate" value="07/23/2026">
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="action-buttons">
+<button class="action-btn btn-add" onclick="addData()"><i class="fa-solid fa-plus-circle"></i> Add</button>
+<button class="action-btn btn-remove" onclick="deleteData()"><i class="fa-solid fa-minus-circle"></i> Remove</button>
+<button class="action-btn btn-update" onclick="updateData()"><i class="fa-solid fa-pen-to-square"></i> Update</button>
+<button class="action-btn btn-clear" onclick="clearForm()"><i class="fa-solid fa-arrows-rotate"></i> Clear</button>
+<button class="action-btn btn-view" onclick="viewAllData()"><i class="fa-solid fa-bullseye"></i> View all</button>
+</div>
+</div>
+</div>
+<!-- Live Search Bar -->
+<div class="search-container" id="searchContainer">
+<input type="text" id="tableSearchInput" class="search-input" onkeyup="searchTeacherTable()" placeholder="Search Teacher by ID, Name,
+Username or Status...">
+</div><!-- Table Container with Scrollbars -->
+<div class="table-container">
+<table class="data-table" id="teacherTable">
+<thead>
+<tr>
+<th>Teacher Id</th>
+<th>User Name</th>
+<th>Teacher Name</th>
+<th>Teacher Password</th>
+<th>Teacher Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10002</td>
+<td>ashar</td>
+<td>Sir Ashar</td>
+<td>ash</td>
+<td>true</td>
+</tr>
+<tr>
+<td>10003</td>
+<td>sohail</td>
+<td>Sir Sohail</td>
+<td>soh</td>
+<td>true</td>
+</tr>
+<tr>
+<td>10004</td>
+<td>farooq</td>
+<td>Sir Farooq</td>
+<td>far</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- JavaScript Functions -->
+<script>
+let selectedTeacherRow = null;
+document.addEventListener("DOMContentLoaded", function () {
+attachRowClickListeners();
+});
+// Click row to auto fill fields
+function attachRowClickListeners() {
+let tableRows = document.querySelectorAll("#teacherTable tbody tr");
+tableRows.forEach(row => {
+row.onclick = function () {
+tableRows.forEach(r => r.classList.remove("selected-row"));
+this.classList.add("selected-row");
+selectedTeacherRow = this;let cells = this.cells;
+if (cells.length >= 5) {
+document.getElementById("teacherId").value = cells[0].innerText.trim();
+document.getElementById("userName").value = cells[1].innerText.trim();
+document.getElementById("teacherName").value = cells[2].innerText.trim();
+document.getElementById("teacherPassword").value = cells[3].innerText.trim();
+document.getElementById("teacherStatus").value = cells[4].innerText.trim();
+}
+};
+});
+}
+// Add Button Function
+function addData() {
+let id = document.getElementById("teacherId").value;
+let uname = document.getElementById("userName").value;
+let name = document.getElementById("teacherName").value;
+let pass = document.getElementById("teacherPassword").value;
+let status = document.getElementById("teacherStatus").value;
+if (!name || !uname) {
+alert("Kripya Teacher Name aur User Name fill karein!");
+return;
+}
+let tbody = document.querySelector("#teacherTable tbody");
+let newRow = tbody.insertRow();
+newRow.innerHTML = `<td>${id}</td><td>${uname}</td><td>${name}</td><td>${pass}</td><td>${status}</td>`;
+attachRowClickListeners();
+alert("Naya Teacher Successfully Add Ho Gaya Hai!");
+clearForm();
+}
+// Update Button Function
+function updateData() {
+if (selectedTeacherRow === null) {
+alert("Kripya pehle niche table me se kisi Teacher row par click karein!");
+return;
+}
+let id = document.getElementById("teacherId").value;
+let uname = document.getElementById("userName").value;
+let name = document.getElementById("teacherName").value;
+let pass = document.getElementById("teacherPassword").value;
+let status = document.getElementById("teacherStatus").value;
+selectedTeacherRow.cells[0].innerText = id;
+selectedTeacherRow.cells[1].innerText = uname;
+selectedTeacherRow.cells[2].innerText = name;
+selectedTeacherRow.cells[3].innerText = pass;
+selectedTeacherRow.cells[4].innerText = status;
+alert("Teacher Record Successfully Update Ho Gaya Hai!");
+clearForm();
+}
+// Remove Button Function
+function deleteData() {if (selectedTeacherRow !== null) {
+if (confirm("Kya aap is Teacher record ko remove karna chahte hain?")) {
+selectedTeacherRow.remove();
+clearForm();
+}
+} else {
+alert("Kripya pehle remove karne ke liye kisi Teacher row par click karein!");
+}
+}
+// Clear Button Function
+function clearForm() {
+document.getElementById("teacherId").value = "1000" + (Math.floor(Math.random() * 90) + 10);
+document.getElementById("teacherName").value = "";
+document.getElementById("userName").value = "";
+document.getElementById("teacherPassword").value = "";
+document.getElementById("teacherStatus").value = "absent";
+let tableRows = document.querySelectorAll("#teacherTable tbody tr");
+tableRows.forEach(r => r.classList.remove("selected-row"));
+selectedTeacherRow = null;
+}
+// View All Toggle
+function viewAllData() {
+let searchContainer = document.getElementById("searchContainer");
+if (searchContainer) {
+searchContainer.style.display = (searchContainer.style.display === "none" || searchContainer.style.display === "") ? "block" : "none";
+}
+}
+// Live Table Search
+function searchTeacherTable() {
+let filter = document.getElementById("tableSearchInput").value.toUpperCase();
+let rows = document.querySelectorAll("#teacherTable tbody tr");
+rows.forEach(row => {
+let text = row.innerText.toUpperCase();
+row.style.display = text.indexOf(filter) > -1 ? "" : "none";
+});
+}
+</script>
+</body>
+</html>
