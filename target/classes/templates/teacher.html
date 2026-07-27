@@ -178,12 +178,14 @@ outline: none;
 }
 /* Custom Horizontal and Vertical Scrollable Table */
 .table-container {
+width: 100%;
+max-height: 300px
 overflow: auto;
-max-height: 300px;
 background: rgba(255, 255, 255, 0.03);
 border-radius: 8px;
 padding: 10px;
 border: 1px solid rgba(255, 255, 255, 0.1);
+box-sizing:border-box;
 }
 /* Custom Scrollbar */
 .table-container::-webkit-scrollbar {
@@ -199,6 +201,7 @@ background: rgba(255, 255, 255, 0.4);
 }
 .data-table {
 width: 100%;
+min-width:1100px
 border-collapse: collapse;text-align: left;
 font-size: 14px;
 white-space: nowrap;
@@ -276,13 +279,11 @@ Attendance Management System
 <select id="teacherStatus">
 <option value="absent">absent</option>
 <option value="present">present</option>
-<option value="true">true</option>
-<option value="false">false</option>
 </select>
 </div>
 <div class="form-group">
-<label>Date</label>
-<input type="text" id="teacherDate" value="07/23/2026">
+<label for="teacherDate">Date</label>
+<input type="date" id="teacherDate" name="teacherdate" class="form-control" required>
 </div>
 </div>
 <!-- Action Buttons -->
@@ -309,6 +310,7 @@ Username or Status...">
 <th>Teacher Name</th>
 <th>Teacher Password</th>
 <th>Teacher Status</th>
+<th>Teacher Date</th>
 </tr>
 </thead>
 <tbody>
@@ -318,6 +320,7 @@ Username or Status...">
 <td>Sir Ashar</td>
 <td>ash</td>
 <td>true</td>
+<td>21/07/2026</td>
 </tr>
 <tr>
 <td>10003</td>
@@ -325,6 +328,7 @@ Username or Status...">
 <td>Sir Sohail</td>
 <td>soh</td>
 <td>true</td>
+<td>22/07/2026</td>
 </tr>
 <tr>
 <td>10004</td>
@@ -332,6 +336,7 @@ Username or Status...">
 <td>Sir Farooq</td>
 <td>far</td>
 <td>true</td>
+<td>23/03/2026</td>
 </tr>
 </tbody>
 </table>
@@ -352,12 +357,13 @@ row.onclick = function () {
 tableRows.forEach(r => r.classList.remove("selected-row"));
 this.classList.add("selected-row");
 selectedTeacherRow = this;let cells = this.cells;
-if (cells.length >= 5) {
+if (cells.length >= 6) {
 document.getElementById("teacherId").value = cells[0].innerText.trim();
 document.getElementById("userName").value = cells[1].innerText.trim();
 document.getElementById("teacherName").value = cells[2].innerText.trim();
 document.getElementById("teacherPassword").value = cells[3].innerText.trim();
 document.getElementById("teacherStatus").value = cells[4].innerText.trim();
+document.getElementById("teacherDate").value = cells[5].innerText.trim();
 }
 };
 });
@@ -369,13 +375,14 @@ let uname = document.getElementById("userName").value;
 let name = document.getElementById("teacherName").value;
 let pass = document.getElementById("teacherPassword").value;
 let status = document.getElementById("teacherStatus").value;
+let date = document.getElementById("teacherDate").value;
 if (!name || !uname) {
 alert("Kripya Teacher Name aur User Name fill karein!");
 return;
 }
 let tbody = document.querySelector("#teacherTable tbody");
 let newRow = tbody.insertRow();
-newRow.innerHTML = `<td>${id}</td><td>${uname}</td><td>${name}</td><td>${pass}</td><td>${status}</td>`;
+newRow.innerHTML = `<td>${id}</td><td>${uname}</td><td>${name}</td><td>${pass}</td><td>${status}</td><td>${date}</td>`;
 attachRowClickListeners();
 alert("Naya Teacher Successfully Add Ho Gaya Hai!");
 clearForm();
@@ -391,11 +398,13 @@ let uname = document.getElementById("userName").value;
 let name = document.getElementById("teacherName").value;
 let pass = document.getElementById("teacherPassword").value;
 let status = document.getElementById("teacherStatus").value;
+let date = document.getElementById("teacherDate").value;
 selectedTeacherRow.cells[0].innerText = id;
 selectedTeacherRow.cells[1].innerText = uname;
 selectedTeacherRow.cells[2].innerText = name;
 selectedTeacherRow.cells[3].innerText = pass;
 selectedTeacherRow.cells[4].innerText = status;
+selectedTeacherRow.cells[5].innerText = date;
 alert("Teacher Record Successfully Update Ho Gaya Hai!");
 clearForm();
 }
@@ -416,6 +425,7 @@ document.getElementById("teacherName").value = "";
 document.getElementById("userName").value = "";
 document.getElementById("teacherPassword").value = "";
 document.getElementById("teacherStatus").value = "absent";
+document.getElementById("teacherDate").value = "";
 let tableRows = document.querySelectorAll("#teacherTable tbody tr");
 tableRows.forEach(r => r.classList.remove("selected-row"));
 selectedTeacherRow = null;

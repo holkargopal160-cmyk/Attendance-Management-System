@@ -1,4 +1,4 @@
-Chf
+//teacher.html//
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -179,12 +179,14 @@ outline: none;
 }
 /* Custom Horizontal and Vertical Scrollable Table */
 .table-container {
+width: 100%;
+max-height: 300px
 overflow: auto;
-max-height: 300px;
 background: rgba(255, 255, 255, 0.03);
 border-radius: 8px;
 padding: 10px;
 border: 1px solid rgba(255, 255, 255, 0.1);
+box-sizing:border-box;
 }
 /* Custom Scrollbar */
 .table-container::-webkit-scrollbar {
@@ -200,6 +202,7 @@ background: rgba(255, 255, 255, 0.4);
 }
 .data-table {
 width: 100%;
+min-width:1100px
 border-collapse: collapse;text-align: left;
 font-size: 14px;
 white-space: nowrap;
@@ -277,13 +280,11 @@ Attendance Management System
 <select id="teacherStatus">
 <option value="absent">absent</option>
 <option value="present">present</option>
-<option value="true">true</option>
-<option value="false">false</option>
 </select>
 </div>
 <div class="form-group">
-<label>Date</label>
-<input type="text" id="teacherDate" value="07/23/2026">
+<label for="teacherDate">Date</label>
+<input type="date" id="teacherDate" name="teacherdate" class="form-control" required>
 </div>
 </div>
 <!-- Action Buttons -->
@@ -310,6 +311,7 @@ Username or Status...">
 <th>Teacher Name</th>
 <th>Teacher Password</th>
 <th>Teacher Status</th>
+<th>Teacher Date</th>
 </tr>
 </thead>
 <tbody>
@@ -319,6 +321,7 @@ Username or Status...">
 <td>Sir Ashar</td>
 <td>ash</td>
 <td>true</td>
+<td>21/07/2026</td>
 </tr>
 <tr>
 <td>10003</td>
@@ -326,6 +329,7 @@ Username or Status...">
 <td>Sir Sohail</td>
 <td>soh</td>
 <td>true</td>
+<td>22/07/2026</td>
 </tr>
 <tr>
 <td>10004</td>
@@ -333,6 +337,7 @@ Username or Status...">
 <td>Sir Farooq</td>
 <td>far</td>
 <td>true</td>
+<td>23/03/2026</td>
 </tr>
 </tbody>
 </table>
@@ -353,12 +358,13 @@ row.onclick = function () {
 tableRows.forEach(r => r.classList.remove("selected-row"));
 this.classList.add("selected-row");
 selectedTeacherRow = this;let cells = this.cells;
-if (cells.length >= 5) {
+if (cells.length >= 6) {
 document.getElementById("teacherId").value = cells[0].innerText.trim();
 document.getElementById("userName").value = cells[1].innerText.trim();
 document.getElementById("teacherName").value = cells[2].innerText.trim();
 document.getElementById("teacherPassword").value = cells[3].innerText.trim();
 document.getElementById("teacherStatus").value = cells[4].innerText.trim();
+document.getElementById("teacherDate").value = cells[5].innerText.trim();
 }
 };
 });
@@ -370,13 +376,14 @@ let uname = document.getElementById("userName").value;
 let name = document.getElementById("teacherName").value;
 let pass = document.getElementById("teacherPassword").value;
 let status = document.getElementById("teacherStatus").value;
+let date = document.getElementById("teacherDate").value;
 if (!name || !uname) {
 alert("Kripya Teacher Name aur User Name fill karein!");
 return;
 }
 let tbody = document.querySelector("#teacherTable tbody");
 let newRow = tbody.insertRow();
-newRow.innerHTML = `<td>${id}</td><td>${uname}</td><td>${name}</td><td>${pass}</td><td>${status}</td>`;
+newRow.innerHTML = `<td>${id}</td><td>${uname}</td><td>${name}</td><td>${pass}</td><td>${status}</td><td>${date}</td>`;
 attachRowClickListeners();
 alert("Naya Teacher Successfully Add Ho Gaya Hai!");
 clearForm();
@@ -392,11 +399,13 @@ let uname = document.getElementById("userName").value;
 let name = document.getElementById("teacherName").value;
 let pass = document.getElementById("teacherPassword").value;
 let status = document.getElementById("teacherStatus").value;
+let date = document.getElementById("teacherDate").value;
 selectedTeacherRow.cells[0].innerText = id;
 selectedTeacherRow.cells[1].innerText = uname;
 selectedTeacherRow.cells[2].innerText = name;
 selectedTeacherRow.cells[3].innerText = pass;
 selectedTeacherRow.cells[4].innerText = status;
+selectedTeacherRow.cells[5].innerText = date;
 alert("Teacher Record Successfully Update Ho Gaya Hai!");
 clearForm();
 }
@@ -417,6 +426,7 @@ document.getElementById("teacherName").value = "";
 document.getElementById("userName").value = "";
 document.getElementById("teacherPassword").value = "";
 document.getElementById("teacherStatus").value = "absent";
+document.getElementById("teacherDate").value = "";
 let tableRows = document.querySelectorAll("#teacherTable tbody tr");
 tableRows.forEach(r => r.classList.remove("selected-row"));
 selectedTeacherRow = null;
@@ -440,3 +450,1261 @@ row.style.display = text.indexOf(filter) > -1 ? "" : "none";
 </script>
 </body>
 </html>
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance Management System - Report</title>
+<!-- FontAwesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- SheetJS for Excel Export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- jsPDF for PDF Export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+<style>
+*{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #0b132b, #1c2541, #3a506b);
+color: #fff;
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+}
+/* Header Title */
+.top-header {
+width: 100%;
+text-align: center;
+padding: 20px 0 10px 0;
+font-size: 32px;
+font-weight: 800;
+color: #ffffff;
+letter-spacing: 1px;
+text-shadow: 0px 3px 8px rgba(0, 0, 0, 0.6);
+}
+.container {
+display: flex;
+flex: 1;
+padding: 10px 20px 20px 20px;
+gap: 20px;
+}
+/* Sidebar */
+.sidebar {
+width: 220px;
+padding: 10px;
+display: flex;
+flex-direction: column;
+gap: 12px;
+}
+.admin-panel-title {
+color: #94a3b8;
+font-size: 13px;
+font-weight: 700;
+letter-spacing: 1.5px;
+margin-bottom: 8px;
+text-transform: uppercase;
+}
+.nav-btn {
+background: rgba(255, 255, 255, 0.9);
+color: #1e293b;
+text-decoration: none;
+padding: 12px 18px;
+border-radius: 6px;
+font-weight: bold;
+font-size: 14px;
+text-align: left;
+display: block;
+box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+transition: all 0.2s ease-in-out;
+letter-spacing: 0.5px;
+}
+.nav-btn.active, .nav-btn:hover {
+background: #cbd5e1;
+transform: translateX(3px);
+}
+/* Main Content Panel */
+.main-content {
+flex: 1;
+display: flex;
+flex-direction: column;
+gap: 15px;
+overflow: hidden;
+}
+.card-box {
+background: rgba(255, 255, 255, 0.05);
+border: 1px solid rgba(255, 255, 255, 0.1);
+border-radius: 8px;
+box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+display: flex;
+flex-direction: column;
+max-height: calc(100vh - 100px);
+}
+.card-header {
+background: rgba(255, 255, 255, 0.08);
+padding: 12px 20px;
+font-size: 16px;
+font-weight: bold;
+display: flex;
+align-items: center;
+gap: 10px;
+color: #ffffff;
+border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+/* TABS NAVIGATION */
+.tabs-header {
+display: flex;
+background: rgba(0, 0, 0, 0.2);
+border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+overflow-x: auto;
+white-space: nowrap;
+position: relative;
+z-index: 10;
+}
+.tab-btn {
+background: transparent;
+border: none;
+color: #94a3b8;
+padding: 12px 18px;
+font-size: 13.5px;
+font-weight: 600;
+cursor: pointer;
+transition: 0.2s;
+border-right: 1px solid rgba(255, 255, 255, 0.05);
+outline: none;
+}
+.tab-btn:hover {
+color: #fff;
+background: rgba(255, 255, 255, 0.05);
+}
+.tab-btn.active {
+color: #ffffff;
+background: rgba(255, 255, 255, 0.12);
+border-bottom: 3px solid #38bdf8;
+}
+.tab-content-wrapper {
+padding: 20px;
+overflow-y: auto;
+flex: 1;
+}
+.tab-pane {
+display: none;
+}
+.tab-pane.active {
+display: block;
+}
+/* Title & Export Actions Bar */
+.report-top-bar {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 15px;
+}
+.report-title {
+font-size: 20px;
+font-weight: bold;
+color: #ffffff;
+}
+.export-actions {
+display: flex;
+gap: 15px;
+align-items: center;
+}
+.export-btn {
+background: transparent;
+border: none;
+color: #ffffff;
+font-size: 15px;
+font-weight: bold;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 6px;
+transition: 0.2s;
+}
+.export-btn.excel { color: #2ea44f; }
+.export-btn.pdf { color: #f85149; }
+.export-btn.print { color: #38bdf8; }
+.export-btn:hover {
+opacity: 0.8;
+transform: scale(1.05);
+}
+/* Filter Controls */
+.filter-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 15px;
+background: rgba(0, 0, 0, 0.2);
+padding: 15px;
+border-radius: 6px;
+margin-bottom: 15px;
+border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.filter-group {
+display: flex;
+flex-direction: column;
+gap: 5px;
+}
+.filter-group label {
+font-size: 12px;
+color: #cbd5e1;
+font-weight: 600;
+}
+.filter-group input, .filter-group select {
+padding: 8px 10px;
+border-radius: 4px;
+border: 1px solid #475569;
+background: rgba(255, 255, 255, 0.95);
+color: #000;
+font-size: 13px;
+}
+/* Table Scroll Containers */
+.table-container {
+width: 100%;
+max-height: 400px;
+overflow: auto;
+border-radius: 6px;
+border: 1px solid rgba(255, 255, 255, 0.15);
+background: rgba(0, 0, 0, 0.2);
+}
+.table-container::-webkit-scrollbar,
+.tabs-header::-webkit-scrollbar,
+.tab-content-wrapper::-webkit-scrollbar {
+width: 8px;
+height: 8px;
+}
+.table-container::-webkit-scrollbar-thumb,
+.tabs-header::-webkit-scrollbar-thumb,
+.tab-content-wrapper::-webkit-scrollbar-thumb {
+background: rgba(255, 255, 255, 0.25);
+border-radius: 4px;
+}
+/* Table Styling */
+.data-table {
+width: 100%;
+border-collapse: collapse;
+text-align: left;
+font-size: 13.5px;
+white-space: nowrap;
+}
+.data-table, .data-table th, .data-table td {
+border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+.data-table th {
+background: rgba(255, 255, 255, 0.12);
+padding: 10px 14px;
+color: #93c5fd;
+font-weight: bold;
+position: sticky;
+top: 0;
+z-index: 2;
+}
+.data-table td {
+padding: 8px 14px;
+}
+.data-table tbody tr:hover {
+background-color: rgba(56, 189, 248, 0.2) !important;
+}
+</style>
+</head>
+<body>
+<!-- Header Title -->
+<div class="top-header">Attendance Management System</div>
+<div class="container">
+<!-- Sidebar Navigation -->
+<div class="sidebar">
+<div class="admin-panel-title">ADMIN PANEL</div>
+<a href="/teacher" class="nav-btn">DASHBOARD</a>
+<a href="/teacher" class="nav-btn">TEACHER</a>
+<a href="/student" class="nav-btn">STUDENT</a>
+<a href="/batch" class="nav-btn">BATCH</a>
+<a href="/report" class="nav-btn active">REPORT</a>
+<a href="/login" class="nav-btn">EXIT</a>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<div class="card-box">
+<!-- Card Title -->
+<div class="card-header">
+<i class="fa-solid fa-file-invoice"></i> Reporting Panel
+</div>
+<!-- 6 TABS NAVIGATION HEADER -->
+<div class="tabs-header">
+<button class="tab-btn active">All Batches Attendance</button>
+<button class="tab-btn">Morning Batch Student and Teacher Attendance</button>
+<button class="tab-btn">Afternoon Batch Student and Teacher Attendance</button>
+<button class="tab-btn">Evening Batch Student and Teacher Attendance</button>
+<button class="tab-btn">All Batches Attendance with Customized Date</button>
+<button class="tab-btn">Batch Attendance</button>
+</div>
+<!-- Tab Content Area -->
+<div class="tab-content-wrapper">
+<!-- TAB 1: ALL BATCHES ATTENDANCE -->
+<div id="tab1" class="tab-pane active">
+<div class="report-top-bar">
+<div class="report-title">All Batch Attendance</div>
+<div class="export-actions">
+<button class="export-btn excel" onclick="exportToExcel('table1', 'All_Batches_Attendance')"><i class="fa-solid fa-file-excel"></i> Excel</button>
+<button class="export-btn pdf" onclick="exportToPDF('table1', 'All_Batches_Attendance')"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+<button class="export-btn print" onclick="printTable('table1', 'All_Batches_Attendance')"><i class="fa-solid fa-print"></i> Print</button>
+</div>
+</div>
+<div class="table-container">
+<table class="data-table" id="table1">
+<thead>
+<tr>
+<th>Attendance Date</th>
+<th>Student Id</th>
+<th>Student Name</th>
+<th>Batch Code</th>
+<th>Book</th>
+<th>Batch Time</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>2016-01-02</td><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td><td>06:40 AM</td></tr>
+<tr><td>2016-01-02</td><td>1123</td><td>Batool</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td><td>06:40 AM</td></tr>
+<tr><td>2016-01-02</td><td>1124</td><td>Faiza</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td><td>06:40 AM</td></tr>
+<tr><td>2016-01-02</td><td>1125</td><td>Hafsa</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td><td>06:40 AM</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- TAB 2: MORNING BATCH ATTENDANCE -->
+<div id="tab2" class="tab-pane">
+<div class="filter-grid">
+<div class="filter-group">
+<label>Select Batch Code</label>
+<select>
+<option value="IPRO-201601B">IPRO-201601B</option>
+<option value="IPRO-201504D">IPRO-201504D</option>
+</select>
+</div>
+<div class="filter-group">
+<label>Select Student Name</label>
+<select>
+<option value="Basma">Basma</option>
+<option value="Batool">Batool</option>
+</select>
+</div>
+</div>
+<div class="report-top-bar">
+<div class="report-title">Morning Batch Student and Teacher Attendance</div>
+<div class="export-actions">
+<button class="export-btn excel" onclick="exportToExcel('table2', 'Morning_Batch_Attendance')"><i class="fa-solid fa-file-excel"></i> Excel</button>
+<button class="export-btn pdf" onclick="exportToPDF('table2', 'Morning_Batch_Attendance')"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+<button class="export-btn print" onclick="printTable('table2', 'Morning_Batch_Attendance')"><i class="fa-solid fa-print"></i> Print</button>
+</div>
+</div>
+<div class="table-container">
+<table class="data-table" id="table2">
+<thead>
+<tr>
+<th>Attendance Date</th>
+<th>Student Id</th>
+<th>Student Name</th>
+<th>Batch Code</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>2016-01-02</td><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>Present</td></tr>
+<tr><td>2016-01-05</td><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>Present</td></tr>
+<tr><td>2016-01-07</td><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>Absent</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- TAB 3: AFTERNOON BATCH ATTENDANCE -->
+<div id="tab3" class="tab-pane">
+<div class="filter-grid">
+<div class="filter-group">
+<label>Select Batch Code</label>
+<select>
+<option value="IPRO-201602A">IPRO-201602A</option>
+<option value="IPRO-201504D">IPRO-201504D</option>
+</select>
+</div>
+<div class="filter-group">
+<label>Select Student Name</label>
+<select>
+<option value="Batool">Batool</option>
+<option value="Basma">Basma</option>
+</select>
+</div>
+</div>
+<div class="report-top-bar">
+<div class="report-title">Afternoon Batch Student and Teacher Attendance</div>
+<div class="export-actions">
+<button class="export-btn excel" onclick="exportToExcel('table3', 'Afternoon_Batch_Attendance')"><i class="fa-solid fa-file-excel"></i> Excel</button>
+<button class="export-btn pdf" onclick="exportToPDF('table3', 'Afternoon_Batch_Attendance')"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+<button class="export-btn print" onclick="printTable('table3', 'Afternoon_Batch_Attendance')"><i class="fa-solid fa-print"></i> Print</button>
+</div>
+</div>
+<div class="table-container">
+<table class="data-table" id="table3">
+<thead>
+<tr>
+<th>Attendance Date</th>
+<th>Student Id</th>
+<th>Student Name</th>
+<th>Batch Code</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>2016-01-02</td><td>1123</td><td>Batool</td><td>IPRO-201602A</td><td>Present</td></tr>
+<tr><td>2016-01-05</td><td>1123</td><td>Batool</td><td>IPRO-201602A</td><td>Present</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- TAB 4: EVENING BATCH ATTENDANCE -->
+<div id="tab4" class="tab-pane">
+<div class="filter-grid">
+<div class="filter-group">
+<label>Select Batch Code</label>
+<select>
+<option value="IPRO-201603C">IPRO-201603C</option>
+</select>
+</div>
+<div class="filter-group">
+<label>Select Student Name</label>
+<select>
+<option value="Faiza">Faiza</option>
+</select>
+</div>
+</div>
+<div class="report-top-bar">
+<div class="report-title">Evening Batch Student and Teacher Attendance</div>
+<div class="export-actions">
+<button class="export-btn excel" onclick="exportToExcel('table4', 'Evening_Batch_Attendance')"><i class="fa-solid fa-file-excel"></i> Excel</button>
+<button class="export-btn pdf" onclick="exportToPDF('table4', 'Evening_Batch_Attendance')"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+<button class="export-btn print" onclick="printTable('table4', 'Evening_Batch_Attendance')"><i class="fa-solid fa-print"></i> Print</button>
+</div>
+</div>
+<div class="table-container">
+<table class="data-table" id="table4">
+<thead>
+<tr>
+<th>Attendance Date</th>
+<th>Student Id</th>
+<th>Student Name</th>
+<th>Batch Code</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>2016-01-02</td><td>1124</td><td>Faiza</td><td>IPRO-201603C</td><td>Present</td></tr>
+<tr><td>2016-01-05</td><td>1124</td><td>Faiza</td><td>IPRO-201603C</td><td>Absent</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- TAB 5: ALL BATCHES ATTENDANCE WITH CUSTOMIZED DATE -->
+<div id="tab5" class="tab-pane">
+<div class="filter-grid">
+<div class="filter-group">
+<label>From Date</label>
+<input type="date" value="2016-01-01">
+</div>
+<div class="filter-group">
+<label>To Date</label>
+<input type="date" value="2016-01-31">
+</div>
+</div>
+<div class="report-top-bar">
+<div class="report-title">Customized Date Attendance</div>
+<div class="export-actions">
+<button class="export-btn excel" onclick="exportToExcel('table5', 'Custom_Date_Attendance')"><i class="fa-solid fa-file-excel"></i> Excel</button>
+<button class="export-btn pdf" onclick="exportToPDF('table5', 'Custom_Date_Attendance')"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+<button class="export-btn print" onclick="printTable('table5', 'Custom_Date_Attendance')"><i class="fa-solid fa-print"></i> Print</button>
+</div>
+</div>
+<div class="table-container">
+<table class="data-table" id="table5">
+<thead>
+<tr>
+<th>Attendance Date</th>
+<th>Student Id</th>
+<th>Student Name</th>
+<th>Batch Code</th>
+<th>Book</th>
+<th>Batch Time</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>2016-01-02</td><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td><td>06:40 AM</td></tr>
+<tr><td>2016-01-05</td><td>1123</td><td>Batool</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td><td>06:40 AM</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- TAB 6: BATCH ATTENDANCE -->
+<div id="tab6" class="tab-pane">
+<div class="filter-grid">
+<div class="filter-group">
+<label>Select Batch Code</label>
+<select>
+<option value="IPRO-201601B">IPRO-201601B</option>
+<option value="IPRO-201505E">IPRO-201505E</option>
+</select>
+</div>
+</div>
+<div class="report-top-bar">
+<div class="report-title">Batch Attendance</div>
+<div class="export-actions">
+<button class="export-btn excel" onclick="exportToExcel('table6', 'Batch_Attendance')"><i class="fa-solid fa-file-excel"></i> Excel</button>
+<button class="export-btn pdf" onclick="exportToPDF('table6', 'Batch_Attendance')"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+<button class="export-btn print" onclick="printTable('table6', 'Batch_Attendance')"><i class="fa-solid fa-print"></i> Print</button>
+</div>
+</div>
+<div class="table-container">
+<table class="data-table" id="table6">
+<thead>
+<tr>
+<th>Attendance Date</th>
+<th>Student Id</th>
+<th>Student Name</th>
+<th>Batch Code</th>
+<th>Book</th>
+<th>Batch Time</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>2016-01-02</td><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td><td>06:40 AM</td></tr>
+<tr><td>2016-01-02</td><td>1123</td><td>Batool</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td><td>06:40 AM</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- JavaScript Event Listeners & Functions -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabPanes = document.querySelectorAll('.tab-pane');
+
+tabButtons.forEach((button, index) => {
+button.addEventListener('click', function () {
+// 1. All Active Tabs border remove
+tabButtons.forEach(btn => btn.classList.remove('active'));
+// 2. Active Blue Line to Clicked Button
+this.classList.add('active');
+// 3. Hide all Tab Content
+tabPanes.forEach(pane => {
+pane.classList.remove('active');
+pane.style.display = 'none';
+});
+// 4. Display Selected Tab Table Content
+if (tabPanes[index]) {
+tabPanes[index].classList.add('active');
+tabPanes[index].style.display = 'block';
+}
+});
+});
+});
+
+// Excel Export
+function exportToExcel(tableId, filename) {
+let table = document.getElementById(tableId);
+let wb = XLSX.utils.table_to_book(table, { sheet: "Attendance Report" });
+XLSX.writeFile(wb, filename + ".xlsx");
+}
+
+// PDF Export
+function exportToPDF(tableId, title) {
+const { jsPDF } = window.jspdf;
+const doc = new jsPDF();
+doc.setFontSize(16);
+doc.text(title, 14, 15);
+doc.autoTable({
+html: '#' + tableId,
+startY: 22,
+theme: 'grid',
+headStyles: { fillColor: [15, 23, 42] }
+});
+doc.save(title.replace(/\s+/g, '_') + '.pdf');
+}
+
+// Print Function
+function printTable(tableId, title) {
+let tableHTML = document.getElementById(tableId).outerHTML;
+let printWindow = window.open('', '', 'height=600,width=800');
+printWindow.document.write('<html><head><title>' + title + '</title>');
+printWindow.document.write('<style>table {width:100%; border-collapse:collapse;} th, td {border:1px solid #000; padding:8px; text-align:left;}</style>');
+printWindow.document.write('</head><body>');
+printWindow.document.write('<h2>' + title + '</h2>');
+printWindow.document.write(tableHTML);
+printWindow.document.write('</body></html>');
+printWindow.document.close();
+printWindow.print();
+}
+</script>
+</body>
+</html>
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance Management System - Report</title>
+<!-- FontAwesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- SheetJS for Excel Export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- jsPDF for PDF Export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+<style>
+*{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #0b132b, #1c2541, #3a506b);
+color: #fff;
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+}
+/* Header Title */
+.top-header {
+width: 100%;
+text-align: center;
+padding: 20px 0 10px 0;
+font-size: 32px;
+font-weight: 800;
+color: #ffffff;
+letter-spacing: 1px;
+text-shadow: 0px 3px 8px rgba(0, 0, 0, 0.6);
+}
+.container {
+display: flex;
+flex: 1;
+padding: 10px 20px 20px 20px;
+gap: 20px;
+}
+/* Sidebar */
+.sidebar {
+width: 220px;
+padding: 10px;
+display: flex;
+flex-direction: column;
+gap: 12px;
+}
+.admin-panel-title {
+color: #94a3b8;
+font-size: 13px;
+font-weight: 700;
+letter-spacing: 1.5px;
+margin-bottom: 8px;
+text-transform: uppercase;
+}
+.nav-btn {
+background: rgba(255, 255, 255, 0.9);
+color: #1e293b;
+text-decoration: none;
+padding: 12px 18px;
+border-radius: 6px;
+font-weight: bold;
+font-size: 14px;
+text-align: left;
+display: block;
+box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+transition: all 0.2s ease-in-out;
+letter-spacing: 0.5px;
+}
+.nav-btn.active, .nav-btn:hover {
+background: #cbd5e1;
+transform: translateX(3px);
+}
+/* Main Content Panel */
+.main-content {
+flex: 1;
+display: flex;
+flex-direction: column;
+gap: 15px;
+overflow: hidden;
+}
+.card-box {
+background: rgba(255, 255, 255, 0.05);
+border: 1px solid rgba(255, 255, 255, 0.1);
+border-radius: 8px;
+box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+display: flex;
+flex-direction: column;
+max-height: calc(100vh - 100px);
+}
+.card-header {
+background: rgba(255, 255, 255, 0.08);
+padding: 12px 20px;
+font-size: 16px;
+font-weight: bold;
+display: flex;
+align-items: center;
+gap: 10px;
+color: #ffffff;
+border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+/* TABS NAVIGATION */
+.tabs-header {
+display: flex;
+background: rgba(0, 0, 0, 0.2);
+border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+overflow-x: auto;
+white-space: nowrap;
+position: relative;
+z-index: 10;
+}
+.tab-btn {
+background: transparent;
+border: none;
+color: #94a3b8;
+padding: 12px 18px;
+font-size: 13.5px;
+font-weight: 600;
+cursor: pointer;
+transition: 0.2s;
+border-right: 1px solid rgba(255, 255, 255, 0.05);
+outline: none;
+}
+.tab-btn:hover {
+color: #fff;
+background: rgba(255, 255, 255, 0.05);
+}
+.tab-btn.active {
+color: #ffffff;
+background: rgba(255, 255, 255, 0.12);
+border-bottom: 3px solid #38bdf8;
+}
+.tab-content-wrapper {
+padding: 20px;
+overflow-y: auto;
+flex: 1;
+}
+.tab-pane {
+display: none;
+}
+.tab-pane.active {
+display: block;
+}
+/* Title & Export Actions Bar */
+.report-top-bar {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 15px;
+}
+.report-title {
+font-size: 20px;
+font-weight: bold;
+color: #ffffff;
+}
+.export-actions {
+display: flex;
+gap: 15px;
+align-items: center;
+}
+.export-btn {
+background: transparent;
+border: none;
+color: #ffffff;
+font-size: 15px;
+font-weight: bold;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 6px;
+transition: 0.2s;
+}
+.export-btn.excel { color: #2ea44f; }
+.export-btn.pdf { color: #f85149; }
+.export-btn.print { color: #38bdf8; }
+.export-btn:hover {
+opacity: 0.8;
+transform: scale(1.05);
+}
+/* Filter Controls */
+.filter-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 15px;
+background: rgba(0, 0, 0, 0.2);
+padding: 15px;
+border-radius: 6px;
+margin-bottom: 15px;
+border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.filter-group {
+display: flex;
+flex-direction: column;
+gap: 5px;
+}
+.filter-group label {
+font-size: 12px;
+color: #cbd5e1;
+font-weight: 600;
+}
+.filter-group input, .filter-group select {
+padding: 8px 10px;
+border-radius: 4px;
+border: 1px solid #475569;
+background: rgba(255, 255, 255, 0.95);
+color: #000;
+font-size: 13px;
+}
+/* Table Scroll Containers */
+.table-container {
+width: 100%;
+max-height: 400px;
+overflow: auto;
+border-radius: 6px;
+border: 1px solid rgba(255, 255, 255, 0.15);
+background: rgba(0, 0, 0, 0.2);
+}
+.table-container::-webkit-scrollbar,
+.tabs-header::-webkit-scrollbar,
+.tab-content-wrapper::-webkit-scrollbar {
+width: 8px;
+height: 8px;
+}
+.table-container::-webkit-scrollbar-thumb,
+.tabs-header::-webkit-scrollbar-thumb,
+.tab-content-wrapper::-webkit-scrollbar-thumb {
+background: rgba(255, 255, 255, 0.25);
+border-radius: 4px;
+}
+/* Table Styling */
+.data-table {
+width: 100%;
+border-collapse: collapse;
+text-align: left;
+font-size: 13.5px;
+white-space: nowrap;
+}
+.data-table, .data-table th, .data-table td {
+border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+.data-table th {
+background: rgba(255, 255, 255, 0.12);
+padding: 10px 14px;
+color: #93c5fd;
+font-weight: bold;
+position: sticky;
+top: 0;
+z-index: 2;
+}
+.data-table td {
+padding: 8px 14px;
+}
+.data-table tbody tr:hover {
+background-color: rgba(56, 189, 248, 0.2) !important;
+}
+</style>
+</head>
+<body>
+<!-- Header Title -->
+<div class="top-header">Attendance Management System</div>
+<div class="container">
+<!-- Sidebar Navigation -->
+<div class="sidebar">
+<div class="admin-panel-title">ADMIN PANEL</div>
+<a href="/teacher" class="nav-btn">DASHBOARD</a>
+<a href="/teacher" class="nav-btn">TEACHER</a>
+<a href="/student" class="nav-btn">STUDENT</a>
+<a href="/batch" class="nav-btn">BATCH</a>
+<a href="/report" class="nav-btn active">REPORT</a>
+<a href="/login" class="nav-btn">EXIT</a>
+</div>
+<!-- Main Content -->
+<div class="main-content">
+<div class="card-box">
+<!-- Card Title -->
+<div class="card-header">
+<i class="fa-solid fa-file-invoice"></i> Reporting Panel
+</div>
+<!-- ALL PAGE REPORTS TABS NAVIGATION -->
+<div class="tabs-header">
+<button class="tab-btn active">All Batches Attendance</button>
+<button class="tab-btn">Morning Batch Student and Teacher Attendance</button>
+<button class="tab-btn">Teacher Details Report</button>
+<button class="tab-btn">Student Details Report</button>
+<button class="tab-btn">Batch Details Report</button>
+</div>
+<!-- Tab Content Area -->
+<div class="tab-content-wrapper">
+<!-- TAB 1: ALL BATCHES ATTENDANCE -->
+<div id="tab1" class="tab-pane active">
+<div class="report-top-bar">
+<div class="report-title">All Batch Attendance</div>
+<div class="export-actions">
+<button class="export-btn excel" onclick="exportToExcel('table1', 'All_Batches_Attendance')"><i class="fa-solid fa-file-excel"></i> Excel</button>
+<button class="export-btn pdf" onclick="exportToPDF('table1', 'All_Batches_Attendance')"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+<button class="export-btn print" onclick="printTable('table1', 'All_Batches_Attendance')"><i class="fa-solid fa-print"></i> Print</button>
+</div>
+</div>
+<div class="table-container">
+<table class="data-table" id="table1">
+<thead>
+<tr>
+<th>Attendance Date</th>
+<th>Student Id</th>
+<th>Student Name</th>
+<th>Batch Code</th>
+<th>Book</th>
+<th>Batch Time</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>2016-01-02</td><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td><td>06:40 AM</td></tr>
+<tr><td>2016-01-02</td><td>1123</td><td>Batool</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td><td>06:40 AM</td></tr>
+<tr><td>2016-01-02</td><td>1124</td><td>Faiza</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td><td>06:40 AM</td></tr>
+<tr><td>2016-01-02</td><td>1125</td><td>Hafsa</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td><td>06:40 AM</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- TAB 2: MORNING BATCH ATTENDANCE -->
+<div id="tab2" class="tab-pane">
+<div class="filter-grid">
+<div class="filter-group">
+<label>Select Batch Code</label>
+<select>
+<option value="IPRO-201601B">IPRO-201601B</option>
+<option value="IPRO-201504D">IPRO-201504D</option>
+</select>
+</div>
+<div class="filter-group">
+<label>Select Student Name</label>
+<select>
+<option value="Basma">Basma</option>
+<option value="Batool">Batool</option>
+</select>
+</div>
+</div>
+<div class="report-top-bar">
+<div class="report-title">Morning Batch Student and Teacher Attendance</div>
+<div class="export-actions">
+<button class="export-btn excel" onclick="exportToExcel('table2', 'Morning_Batch_Attendance')"><i class="fa-solid fa-file-excel"></i> Excel</button>
+<button class="export-btn pdf" onclick="exportToPDF('table2', 'Morning_Batch_Attendance')"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+<button class="export-btn print" onclick="printTable('table2', 'Morning_Batch_Attendance')"><i class="fa-solid fa-print"></i> Print</button>
+</div>
+</div>
+<div class="table-container">
+<table class="data-table" id="table2">
+<thead>
+<tr>
+<th>Attendance Date</th>
+<th>Student Id</th>
+<th>Student Name</th>
+<th>Batch Code</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>2016-01-02</td><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>Present</td></tr>
+<tr><td>2016-01-05</td><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>Present</td></tr>
+<tr><td>2016-01-07</td><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>Absent</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- TAB 3: TEACHER DETAILS REPORT (FROM TEACHER PAGE) -->
+<div id="tab3" class="tab-pane">
+<div class="report-top-bar">
+<div class="report-title">Teacher Details Report</div>
+<div class="export-actions">
+<button class="export-btn excel" onclick="exportToExcel('table3', 'Teacher_Details_Report')"><i class="fa-solid fa-file-excel"></i> Excel</button>
+<button class="export-btn pdf" onclick="exportToPDF('table3', 'Teacher_Details_Report')"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+<button class="export-btn print" onclick="printTable('table3', 'Teacher_Details_Report')"><i class="fa-solid fa-print"></i> Print</button>
+</div>
+</div>
+<div class="table-container">
+<table class="data-table" id="table3">
+<thead>
+<tr>
+<th>Teacher Id</th>
+<th>User Name</th>
+<th>Teacher Name</th>
+<th>Teacher Password</th>
+<th>Teacher Status</th>
+<th>Teacher Date</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>10002</td><td>ashar</td><td>Sir Ashar</td><td>ash</td><td>true</td><td>21/07/2026</td></tr>
+<tr><td>10003</td><td>sohail</td><td>Sir Sohail</td><td>soh</td><td>true</td><td>22/07/2026</td></tr>
+<tr><td>10004</td><td>farooq</td><td>Sir Farooq</td><td>far</td><td>true</td><td>23/03/2026</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- TAB 4: STUDENT DETAILS REPORT (FROM STUDENT PAGE) -->
+<div id="tab4" class="tab-pane">
+<div class="report-top-bar">
+<div class="report-title">Student Details Report</div>
+<div class="export-actions">
+<button class="export-btn excel" onclick="exportToExcel('table4', 'Student_Details_Report')"><i class="fa-solid fa-file-excel"></i> Excel</button>
+<button class="export-btn pdf" onclick="exportToPDF('table4', 'Student_Details_Report')"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+<button class="export-btn print" onclick="printTable('table4', 'Student_Details_Report')"><i class="fa-solid fa-print"></i> Print</button>
+</div>
+</div>
+<div class="table-container">
+<table class="data-table" id="table4">
+<thead>
+<tr>
+<th>Student Id</th>
+<th>Student Name</th>
+<th>Batch Code</th>
+<th>Semester Name</th>
+<th>Student Days</th>
+<th>Student Status</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>HDSE-I</td><td>MWF</td><td>present</td></tr>
+<tr><td>1123</td><td>Batool</td><td>IPRO-201601B</td><td>HDSE-I</td><td>MWF</td><td>present</td></tr>
+<tr><td>1124</td><td>Faiza</td><td>IPRO-201601B</td><td>HDSE-I</td><td>MWF</td><td>present</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- TAB 5: BATCH DETAILS REPORT (FROM BATCH PAGE) -->
+<div id="tab5" class="tab-pane">
+<div class="report-top-bar">
+<div class="report-title">Batch Details Report</div>
+<div class="export-actions">
+<button class="export-btn excel" onclick="exportToExcel('table5', 'Batch_Details_Report')"><i class="fa-solid fa-file-excel"></i> Excel</button>
+<button class="export-btn pdf" onclick="exportToPDF('table5', 'Batch_Details_Report')"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+<button class="export-btn print" onclick="printTable('table5', 'Batch_Details_Report')"><i class="fa-solid fa-print"></i> Print</button>
+</div>
+</div>
+<div class="table-container">
+<table class="data-table" id="table5">
+<thead>
+<tr>
+<th>Batch Code</th>
+<th>Batch Days</th>
+<th>Batch Time</th>
+<th>Semester Name</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>IPRO-201504D</td><td>MWF</td><td>3-5</td><td>HDSE-II</td></tr>
+<tr><td>IPRO-201505E</td><td>MWF</td><td>11-1</td><td>DISM</td></tr>
+<tr><td>IPRO-201506F</td><td>MWF</td><td>1-3</td><td>CPISM</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- JavaScript Event Listeners & Functions -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+
+    tabButtons.forEach((button, index) => {
+        button.addEventListener('click', function () {
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+
+            tabPanes.forEach(pane => {
+                pane.classList.remove('active');
+                pane.style.display = 'none';
+            });
+
+            if (tabPanes[index]) {
+                tabPanes[index].classList.add('active');
+                tabPanes[index].style.display = 'block';
+            }
+        });
+    });
+});
+
+// Excel Export
+function exportToExcel(tableId, filename) {
+    let table = document.getElementById(tableId);
+    let wb = XLSX.utils.table_to_book(table, { sheet: "Report" });
+    XLSX.writeFile(wb, filename + ".xlsx");
+}
+
+// PDF Export
+function exportToPDF(tableId, title) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text(title, 14, 15);
+    doc.autoTable({
+        html: '#' + tableId,
+        startY: 22,
+        theme: 'grid',
+        headStyles: { fillColor: [15, 23, 42] }
+    });
+    doc.save(title.replace(/\s+/g, '_') + '.pdf');
+}
+
+// Print Function
+function printTable(tableId, title) {
+    let tableHTML = document.getElementById(tableId).outerHTML;
+    let printWindow = window.open('', '', 'height=600,width=800');
+    printWindow.document.write('<html><head><title>' + title + '</title>');
+    printWindow.document.write('<style>table {width:100%; border-collapse:collapse;} th, td {border:1px solid #000; padding:8px; text-align:left;}</style>');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write('<h2>' + title + '</h2>');
+    printWindow.document.write(tableHTML);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+}
+</script>
+</body>
+</html>
+
+
+
+
+
+
+<tbody>
+<tr>
+<td>1149</td><td>Basma</td><td>IPRO-201601B</td><td>09:00 AM</td><td>MWF</td><td>present</td>
+<td>6</td><td>Semester-I</td><td>HTML5 & JS</td><td>07/23/2026</td><td>Sir Ashar</td><td>10002</td>
+</tr>
+<tr>
+<td>1150</td><td>Batool</td><td>IPRO-201601B</td><td>09:00 AM</td><td>MWF</td><td>present</td>
+<td>6</td><td>Semester-I</td><td>HTML5 & JS</td><td>07/23/2026</td><td>Sir Ashar</td><td>10002</td>
+</tr>
+</tbody>
+
+
+
+@GetMapping("/report")
+public String showReportPage() {
+return "report";
+}
+
+
+package com.attendance.controller;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.attendance.model.Teacher;
+import com.attendance.repository.TeacherRepository;
+import com.attendance.repository.StudentRepository;
+import com.attendance.repository.BatchRepository;
+// 1. LOGIN PAGE OPEN KARNE KE LIYE
+apublic String showLoginPage() {
+}
+// 2. LOGIN DATA CHECK KARNE KE LIYE (DATABASE SE)
+@PostMapping("/login")
+public String processLogin(@RequestParam String username, @RequestParam String password, Model model) {
+System.out.println("--- CHALU HUA LOGIN TEST ---");
+System.out.println("Username: " + username);
+Optional<Teacher> teacherOpt = teacherRepository.findByUsername(username);
+if (teacherOpt.isPresent()) {
+Teacher teacher = teacherOpt.get();
+if (teacher.getPassword().equals(password)) {
+System.out.println("Login Successful!");
+return "redirect:/dashboard";
+}
+}
+System.out.println("Database mein user mila?: None");
+model.addAttribute("error", "Invalid Username or Password!");
+return "login";
+}
+// 3. SIGN UP DATA DATABASE MEIN SAVE KARNE KE LIYE
+@PostMapping("/register")
+public String processRegister(@RequestParam String name,
+@RequestParam String username,
+@RequestParam String password) {
+System.out.println("--- CHALU HUA SIGN UP TEST ---");
+Teacher newTeacher = new Teacher();
+newTeacher.setName(name);
+newTeacher.setUsername(username);
+newTeacher.setPassword(password);
+teacherRepository.save(newTeacher);
+System.out.println("Naya user register ho gaya: " + username);
+return "redirect:/login";
+}
+// 4. TEACHER / DASHBOARD PAGE KE LIYE
+@GetMapping("/teacher")
+public String showTeacherPage() {
+return "teacher";
+}
+@GetMapping("/dashboard")
+public String showDashboardPage() {
+return "teacher";
+}
+// 5. STUDENT PAGE KE LIYE
+@GetMapping("/student")
+public String showStudentPage() {
+return "student";
+}
+// 6. BATCH PAGE KE LIYE
+@GetMapping("/batch")
+public String showBatchPage() {
+return "batch";
+}
+// 7. REPORT PAGE KE LIYE
+@GetMapping("/report")
+public String showReportPage(Model model) {
+model.addAttribute("teachers", teacherRepository.findAll());
+model.addAttribute("students", studentRepository.findAll());
+model.addAttribute("batches", batchRepository.findAll());
+return "report";
+}
+// 8. ViewAll Button Ke Liye
+@GetMapping("/viewall")
+public String ViewAllPage() {
+    return "viewall"; 
+}
+@GetMapping("/allTeachers")
+public String showAllTeacherPage() {
+    return "allTeachers";
+}
+}
+
+
+
+
+
+package com.attendance.repository;
+
+import com.attendance.model.Teacher;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
+
+public interface TeacherRepository extends JpaRepository<Teacher, Long> {
+Optional<Teacher> findByUsername(String username);
+}

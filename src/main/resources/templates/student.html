@@ -76,6 +76,8 @@ flex: 1;
 display: flex;
 flex-direction: column;
 gap: 15px;
+min-width: 0;
+overflow-x: hidden
 }
 /* STUDENT CARD BOX CONTAINER WITH PROPER LABELLING */
 .card-box {
@@ -84,6 +86,8 @@ border: 1px solid rgba(255, 255, 255, 0.1);
 border-radius: 8px;
 box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
 overflow: hidden;
+width: 100%;
+box-sizing: border-box;
 }
 /* Proper Label Header */
 .card-header {
@@ -160,7 +164,7 @@ background: rgba(255, 255, 255, 0.1);
 /* Search Box Container */
 .search-container {
 margin-bottom: 10px;
-display: none;
+display: none; /* View All button click hone par toggle hoga */
 }
 .search-input {
 width: 100%;
@@ -174,12 +178,16 @@ outline: none;
 }
 /* Custom Horizontal and Vertical Scrollable Table */
 .table-container {
-overflow: auto;
+width: 100%;
+max-width: 100%;
 max-height: 300px;
+overflow-x: auto;
+overflow-y: auto;
 background: rgba(255, 255, 255, 0.03);
 border-radius: 8px;
 padding: 10px;
 border: 1px solid rgba(255, 255, 255, 0.1);
+box-sizing: border-box;
 }
 /* Scrollbar Styling */
 .table-container::-webkit-scrollbar {
@@ -195,11 +203,13 @@ background: rgba(255, 255, 255, 0.4);
 }
 .data-table {
 width: 100%;
+min-width: 1300px;
 border-collapse: collapse;
 text-align: left;
 font-size: 14px;
 white-space: nowrap;
-}.data-table, .data-table th, .data-table td {
+}
+.data-table, .data-table th, .data-table td {
 border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 .data-table th {
@@ -244,28 +254,54 @@ Attendance Management System
 </div>
 <!-- Main Content -->
 <div class="main-content">
-<!-- PROPER LABELED CARD BOX FOR STUDENT FORM -->
+ <!-- PROPER LABELED CARD BOX FOR STUDENT FORM -->
 <div class="card-box">
 <div class="card-header">
-<i class="fa-solid fa-user-graduate"></i> Student Details</div>
+<i class="fa-solid fa-user-graduate"></i> Student Details
+</div>
 <div class="card-body">
 <div class="form-grid">
-<!-- Left Column -->
+<!-- Left & Right Form Fields -->
 <div class="form-group">
 <label>Student ID</label>
-<input type="text" id="studentId" value="1149">
+<input type="text" id="studentId" value="1149" />
 </div>
 <div class="form-group">
 <label>Total Students</label>
-<input type="text" id="totalStudents" value="6" readonly>
+<input type="text" id="totalStudents" value="6" readonly />
 </div>
+
 <div class="form-group">
 <label>Student Name</label>
-<input type="text" id="studentName" placeholder="Enter student name">
+<input
+type="text" id="studentName"placeholder="Enter student name"/>
 </div>
+
 <div class="form-group">
 <label>Semester Name</label>
-<input type="text" id="semesterName" placeholder="e.g. CPISM, DISM">
+<select id="semester">
+<option value="">semester....</option>
+<option value="Sem-I">Sem-I</option>
+<option value="Sem-II">Sem-II</option>
+<option value="Sem-III">Sem-III</option>
+<option value="Sem-IV">Sem-IV</option>
+<option value="Sem-V">Sem-V</option>
+<option value="Sem-VI">Sem-VI</option>
+<option value="Sem-VII">Sem-VII</option>
+<option value="Sem-VIII">Sem-VIII</option>
+<option value="Sem-IX">Sem-IX</option>
+<option value="Sem-X">Sem-X</option>
+<option value="Sem-XI">Sem-XI</option>
+<option value="Sem-XII">Sem-XII</option>
+<option value="Sem-XIII">Sem-XIII</option>
+<option value="Sem-XIV">Sem-XIV</option>
+<option value="Sem-XV">Sem-XV</option>
+<option value="Sem-XVI">Sem-XVI</option>
+<option value="Sem-XVII">Sem-XVII</option>
+<option value="Sem-XVIII">Sem-XVIII</option>
+<option value="Sem-XIX">Sem-XIX</option>
+<option value="Sem-XX">Sem-XX</option>
+</select>
 </div>
 <div class="form-group">
 <label>Student Batch</label>
@@ -277,49 +313,78 @@ Attendance Management System
 </div>
 <div class="form-group">
 <label>Semester Book</label>
-<input type="text" id="semesterBook" placeholder="e.g. HTML5 - Net">
-</div>
-<div class="form-group">
+<input
+type="text"
+id="semesterBook"
+placeholder="e.g. HTML5 - Net"
+/>
+</div><div class="form-group">
 <label>Student Timing</label>
-<input type="time" id="studentTiming">
+<input type="time" id="studentTiming" />
 </div>
 <div class="form-group">
 <label>Date</label>
-<input type="date" id="studentDate" value="2026-07-23">
+<input type="date" id="studentDate" value="2026-07-23" />
 </div>
 <div class="form-group">
 <label>Student Days</label>
-<input type="text" id="studentDays" placeholder="e.g. TTS, MWF">
+<select id="studentDays">
+<option value="">Please Select....</option>
+<option value="Monday">Monday</option>
+<option value="Tuesday">Tuesday</option>
+<option value="Wednesday">Wednesday</option>
+<option value="Thursday">Thursday</option>
+<option value="Friday">Friday</option>
+<option value="Saturday">Saturday</option>
+<option value="Sunday">Sunday</option>
+</select>
 </div>
 <div class="form-group">
 <label>Teacher Name</label>
-<input type="text" id="teacherName" placeholder="Enter teacher name">
+<input
+type="text"
+id="teacherName"
+placeholder="Enter teacher name"
+/>
 </div>
 <div class="form-group">
 <label>Student Status</label>
 <select id="studentStatus">
-<option value="true">true</option>
-<option value="false">false</option></select>
+<option value="present">present</option>
+<option value="absent">absent</option>
+</select>
 </div>
 <div class="form-group">
 <label>Teacher ID</label>
-<input type="text" id="teacherId" placeholder="Enter teacher ID">
+<input
+type="text"
+id="teacherId"
+placeholder="Enter teacher ID"
+/>
 </div>
 </div>
 <!-- Action Buttons -->
 <div class="action-buttons">
-<button class="action-btn btn-add" onclick="addData()"><i class="fa-solid fa-plus"></i> Add</button>
-<button class="action-btn btn-remove" onclick="deleteData()"><i class="fa-solid fa-minus"></i> Remove</button>
-<button class="action-btn btn-update" onclick="updateData()"><i class="fa-solid fa-pen-to-square"></i> Update</button>
-<button class="action-btn btn-clear" onclick="clearForm()"><i class="fa-solid fa-rotate-right"></i> Clear</button>
-<button class="action-btn btn-view" onclick="viewAllData()"><i class="fa-solid fa-globe"></i> View all</button>
+<button class="action-btn btn-add" onclick="addData()">
+<i class="fa-solid fa-plus"></i> Add
+</button>
+<button class="action-btn btn-remove" onclick="deleteData()">
+<i class="fa-solid fa-minus"></i> Remove</button>
+<button class="action-btn btn-update" onclick="updateData()">
+<i class="fa-solid fa-pen-to-square"></i> Update
+</button>
+<button class="action-btn btn-clear" onclick="clearForm()">
+<i class="fa-solid fa-rotate-right"></i> Clear
+</button>
+<button class="action-btn btn-view" onclick="viewAllData()">
+<i class="fa-solid fa-globe"></i> View All
+</button>
 </div>
 </div>
 </div>
 <!-- Live Search Bar -->
 <div class="search-container" id="searchContainer">
-<input type="text" id="tableSearchInput" class="search-input" onkeyup="searchStudentTable()" placeholder="Search Student by ID, Name,
-Batch, Semester...">
+<input type="text" id="tableSearchInput" class="search-input" onkeyup="searchStudentTable()" placeholder="Search Student by ID, Name, Batch, Semester...">
 </div>
 <!-- Table Container with Scrollbars -->
 <div class="table-container">
@@ -332,9 +397,14 @@ Batch, Semester...">
 <th>Semester Name</th>
 <th>Student Days</th>
 <th>Student Timing</th>
+<th>Student Status</th>
+<th>Semester Books</th>
+<th>Teacher Name</th>
+<th>Teacher Id</th>
+<th>Date</th>
 </tr>
 </thead>
-<tbody>
+<tbody id="studentTableBody">
 <tr>
 <td>1111</td>
 <td>Asad</td>
@@ -342,6 +412,11 @@ Batch, Semester...">
 <td>CPISM</td>
 <td>TTS</td>
 <td>09:00 - 11:00</td>
+<td>true</td>
+<td>core java</td>
+<td>rahul</td>
+<td>gh001</td>
+<td>21/07/2026</td>
 </tr>
 <tr>
 <td>1112</td>
@@ -350,13 +425,24 @@ Batch, Semester...">
 <td>CPISM</td>
 <td>TTS</td>
 <td>09:00 - 11:00</td>
+<td>true</td>
+<td>core java</td>
+<td>rahul</td>
+<td>gh001</td>
+<td>21/07/2026</td>
 </tr>
 <tr>
 <td>1113</td>
-<td>Zaid</td><td>IPRO-201602C</td>
+<td>Zaid</td>
+<td>IPRO-201602C</td>
 <td>CPISM</td>
 <td>TTS</td>
 <td>09:00 - 11:00</td>
+<td>true</td>
+<td>core java</td>
+<td>rahul</td>
+<td>gh001</td>
+<td>21/07/2026</td>
 </tr>
 <tr>
 <td>1114</td>
@@ -365,6 +451,11 @@ Batch, Semester...">
 <td>CPISM</td>
 <td>TTS</td>
 <td>09:00 - 11:00</td>
+<td>true</td>
+<td>core java</td>
+<td>rahul</td>
+<td>gh001</td>
+<td>21/07/2026</td>
 </tr>
 </tbody>
 </table>
@@ -374,87 +465,169 @@ Batch, Semester...">
 <!-- JavaScript Functions -->
 <script>
 let selectedStudentRow = null;
+
+// Page Load hone par click listeners lagao
 document.addEventListener("DOMContentLoaded", function () {
 attachRowClickListeners();
 });
-// Click row to auto fill
+
+// Table ke Rows par Click karne par Form fill hone ka Function
 function attachRowClickListeners() {
-let tableRows = document.querySelectorAll(".data-table tbody tr");
+let tableRows = document.querySelectorAll("#studentTableBody tr");
 tableRows.forEach(row => {
 row.onclick = function () {
 tableRows.forEach(r => r.classList.remove("selected-row"));
 this.classList.add("selected-row");
 selectedStudentRow = this;
 let cells = this.cells;
-if (cells.length >= 5) {
-document.getElementById("studentId").value = cells[0].innerText.trim();
-document.getElementById("studentName").value = cells[1].innerText.trim();
-document.getElementById("studentBatch").value = cells[2].innerText.trim();
-document.getElementById("semesterName").value = cells[3].innerText.trim();
-document.getElementById("studentDays").value = cells[4].innerText.trim();
+if (cells.length >= 10) {
+if(document.getElementById("studentId")) document.getElementById("studentId").value = cells[0].innerText.trim();
+if(document.getElementById("studentName")) document.getElementById("studentName").value = cells[1].innerText.trim();
+if(document.getElementById("studentBatch")) document.getElementById("studentBatch").value = cells[2].innerText.trim();
+if(document.getElementById("semester")) document.getElementById("semester").value = cells[3].innerText.trim();
+if(document.getElementById("studentDays")) document.getElementById("studentDays").value = cells[4].innerText.trim();
+if(document.getElementById("studentTiming")) document.getElementById("studentTiming").value = cells[5].innerText.trim();
+if(document.getElementById("studentStatus")) document.getElementById("studentStatus").value = cells[6].innerText.trim();
+if(document.getElementById("semesterBook")) document.getElementById("semesterBook").value = cells[7].innerText.trim();
+if(document.getElementById("teacherName")) document.getElementById("teacherName").value = cells[8].innerText.trim();
+if(document.getElementById("teacherId")) document.getElementById("teacherId").value = cells[9].innerText.trim();
+if(cells[10] && document.getElementById("studentDate")) document.getElementById("studentDate").value = cells[10].innerText.trim();
 }
 };
 });
 }
-// Update Button
+
+// View All Button Function: Search Bar toggle karna aur focus karna
+function viewAllData() {
+let searchBox = document.getElementById("searchContainer");
+if (searchBox) {
+if (searchBox.style.display === "block") {
+searchBox.style.display = "none";
+} else {
+searchBox.style.display = "block";
+document.getElementById("tableSearchInput").focus();
+}
+}
+}
+
+// Live Search Filter Function
+function searchStudentTable() {
+let input = document.getElementById("tableSearchInput").value.toLowerCase();
+let rows = document.querySelectorAll("#studentTableBody tr");
+
+rows.forEach(row => {
+let rowText = row.innerText.toLowerCase();
+if (rowText.includes(input)) {
+row.style.display = "";
+} else {
+row.style.display = "none";
+}
+});
+}
+
+// Add Button Ka Function
+function addData() {
+let id = document.getElementById("studentId") ? document.getElementById("studentId").value : "";
+let name = document.getElementById("studentName") ? document.getElementById("studentName").value : "";
+let batch = document.getElementById("studentBatch") ? document.getElementById("studentBatch").value : "";
+let sem = document.getElementById("semester") ? document.getElementById("semester").value : "";
+let days = document.getElementById("studentDays") ? document.getElementById("studentDays").value : "";
+let timing = document.getElementById("studentTiming") ? document.getElementById("studentTiming").value : "";
+let status = document.getElementById("studentStatus") ? document.getElementById("studentStatus").value : "";
+let books = document.getElementById("semesterBook") ? document.getElementById("semesterBook").value : "";
+let tName = document.getElementById("teacherName") ? document.getElementById("teacherName").value : "";
+let tId = document.getElementById("teacherId") ? document.getElementById("teacherId").value : "";
+let date = document.getElementById("studentDate") ? document.getElementById("studentDate").value : "";
+if (!id || !name) {
+alert("Kripya kam se kam Student ID aur Name zaroor bharein!");
+return;
+}
+let tbody = document.getElementById("studentTableBody");
+if (!tbody) {
+alert("Table body nahi mili!");
+return;
+}
+let newRow = document.createElement("tr");
+newRow.innerHTML = `
+<td>${id}</td>
+<td>${name}</td>
+<td>${batch}</td>
+<td>${sem}</td>
+<td>${days}</td>
+<td>${timing}</td>
+<td>${status}</td>
+<td>${books}</td>
+<td>${tName}</td>
+<td>${tId}</td>
+<td>${date}</td>
+`;
+tbody.appendChild(newRow);
+alert("Student Data Successfully Add Ho Gaya!");
+attachRowClickListeners();
+clearForm();
+}
+
+// Update Button Ka Function
 function updateData() {
-if (selectedStudentRow === null) {
-alert("Kripya pehle niche table me se kisi Student ki row par click karein!");
+if (!selectedStudentRow) {
+alert("Kripya pehle table me se kisi student ki row par click karein!");
 return;
 }
 let id = document.getElementById("studentId").value;
 let name = document.getElementById("studentName").value;
-let batch = document.getElementById("studentBatch").value;let sem = document.getElementById("semesterName").value;
+let batch = document.getElementById("studentBatch").value;
+let sem = document.getElementById("semester").value;
 let days = document.getElementById("studentDays").value;
+let timing = document.getElementById("studentTiming").value;
+let status = document.getElementById("studentStatus").value;
+let books = document.getElementById("semesterBook").value;
+let tName = document.getElementById("teacherName").value;
+let tId = document.getElementById("teacherId").value;
+let date = document.getElementById("studentDate").value;
 selectedStudentRow.cells[0].innerText = id;
 selectedStudentRow.cells[1].innerText = name;
 selectedStudentRow.cells[2].innerText = batch;
 selectedStudentRow.cells[3].innerText = sem;
 selectedStudentRow.cells[4].innerText = days;
+selectedStudentRow.cells[5].innerText = timing;
+selectedStudentRow.cells[6].innerText = status;
+selectedStudentRow.cells[7].innerText = books;
+selectedStudentRow.cells[8].innerText = tName;
+selectedStudentRow.cells[9].innerText = tId;
+if (selectedStudentRow.cells[10]) selectedStudentRow.cells[10].innerText = date;
 alert("Student Data Successfully Update ho gaya hai!");
 clearForm();
 }
-// Clear Button
+
+// Clear Button Ka Function
 function clearForm() {
-document.getElementById("studentId").value = "";
-document.getElementById("studentName").value = "";
-document.getElementById("studentBatch").value = "";
-document.getElementById("semesterName").value = "";
-document.getElementById("semesterBook").value = "";
-document.getElementById("studentTiming").value = "";
-document.getElementById("studentDays").value = "";
-document.getElementById("teacherName").value = "";
-document.getElementById("teacherId").value = "";
-let tableRows = document.querySelectorAll(".data-table tbody tr");
-tableRows.forEach(r => r.classList.remove("selected-row"));
+if(document.getElementById("studentId")) document.getElementById("studentId").value = "";
+if(document.getElementById("studentName")) document.getElementById("studentName").value = "";
+if(document.getElementById("studentBatch")) document.getElementById("studentBatch").value = "";
+if(document.getElementById("semester")) document.getElementById("semester").value = "";
+if(document.getElementById("studentDays")) document.getElementById("studentDays").value = "";
+if(document.getElementById("studentTiming")) document.getElementById("studentTiming").value = "";
+if(document.getElementById("studentStatus")) document.getElementById("studentStatus").value = "present";
+if(document.getElementById("semesterBook")) document.getElementById("semesterBook").value = "";
+if(document.getElementById("teacherName")) document.getElementById("teacherName").value = "";
+if(document.getElementById("teacherId")) document.getElementById("teacherId").value = "";
+if (selectedStudentRow) {
+selectedStudentRow.classList.remove("selected-row");
 selectedStudentRow = null;
 }
-// View All Button
-function viewAllData() {
-let searchContainer = document.getElementById("searchContainer");
-if (searchContainer) {
-searchContainer.style.display = (searchContainer.style.display === "none" || searchContainer.style.display === "") ? "block" : "none";
 }
-}
-// Live Search
-function searchStudentTable() {
-let filter = document.getElementById("tableSearchInput").value.toUpperCase();
-let rows = document.querySelectorAll(".data-table tbody tr");
-rows.forEach(row => {
-let text = row.innerText.toUpperCase();
-row.style.display = text.indexOf(filter) > -1 ? "" : "none";
-});
-}
-function addData() {
-alert("Naya student add karne ka option!");
-}
+
+// Remove/Delete Function
 function deleteData() {
-if (selectedStudentRow !== null) {
-if (confirm("Kya aap is Student ko remove karna chahte hain?")) {
-selectedStudentRow.remove();
-clearForm();
+if (!selectedStudentRow) {
+alert("Kripya delete karne ke liye kisi row par click karein!");
+return;
 }
-} else {alert("Kripya pehle remove karne ke liye kisi Student row par click karein!");
+if (confirm("Kya aap sach me is row ko remove karna chahte hain?")) {
+selectedStudentRow.remove();
+selectedStudentRow = null;
+clearForm();
+alert("Data successfully remove ho gaya!");
 }
 }
 </script>

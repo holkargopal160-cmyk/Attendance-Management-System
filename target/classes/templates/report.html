@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Attendance Management System - Report</title>
+<title>Attendance Management System - Full Report Panel</title>
 <!-- FontAwesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <!-- SheetJS for Excel Export -->
@@ -25,7 +25,6 @@ min-height: 100vh;
 display: flex;
 flex-direction: column;
 }
-/* Top Header Title */
 .top-header {
 width: 100%;
 text-align: center;
@@ -42,13 +41,14 @@ flex: 1;
 padding: 10px 20px 20px 20px;
 gap: 20px;
 }
-/* Sidebar Styling */
+/* Sidebar Navigation */
 .sidebar {
 width: 220px;
 padding: 10px;
 display: flex;
 flex-direction: column;
-gap: 12px;}
+gap: 12px;
+}
 .admin-panel-title {
 color: #94a3b8;
 font-size: 13px;
@@ -83,7 +83,6 @@ flex-direction: column;
 gap: 15px;
 overflow: hidden;
 }
-/* REPORTING PANEL CARD */
 .card-box {
 background: rgba(255, 255, 255, 0.05);
 border: 1px solid rgba(255, 255, 255, 0.1);
@@ -100,10 +99,11 @@ font-size: 16px;
 font-weight: bold;
 display: flex;
 align-items: center;
-gap: 10px;color: #ffffff;
+gap: 10px;
+color: #ffffff;
 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-/* TAB NAVIGATION HEADER (Scrollable horizontally if needed) */
+/* TABS HEADER */
 .tabs-header {
 display: flex;
 background: rgba(0, 0, 0, 0.2);
@@ -143,14 +143,15 @@ display: none;
 .tab-pane.active {
 display: block;
 }
-/* Content Title & Actions Row */
+/* Action & Filter Section */
 .report-top-bar {
 display: flex;
 justify-content: space-between;
 align-items: center;
 margin-bottom: 15px;
 }
-.report-title {font-size: 20px;
+.report-title {
+font-size: 20px;
 font-weight: bold;
 color: #ffffff;
 }
@@ -178,7 +179,6 @@ transition: 0.2s;
 opacity: 0.8;
 transform: scale(1.05);
 }
-/* Filter Controls Grid (For Custom Date / Filter tabs) */
 .filter-grid {
 display: grid;
 grid-template-columns: repeat(3, 1fr);
@@ -200,22 +200,22 @@ color: #cbd5e1;
 font-weight: 600;
 }
 .filter-group input, .filter-group select {
-padding: 8px 10px;border-radius: 4px;
+padding: 8px 10px;
+border-radius: 4px;
 border: 1px solid #475569;
 background: rgba(255, 255, 255, 0.95);
 color: #000;
 font-size: 13px;
 }
-/* Custom Scrollbars for Left-Right and Up-Down */
+/* Table Container (Horizontal & Vertical Scroll Enabled) */
 .table-container {
 width: 100%;
-max-height: 400px;
+max-height: 420px;
 overflow: auto;
 border-radius: 6px;
 border: 1px solid rgba(255, 255, 255, 0.15);
 background: rgba(0, 0, 0, 0.2);
 }
-/* Scrollbar Styling */
 .table-container::-webkit-scrollbar,
 .tabs-header::-webkit-scrollbar,
 .tab-content-wrapper::-webkit-scrollbar {
@@ -228,10 +228,7 @@ height: 8px;
 background: rgba(255, 255, 255, 0.25);
 border-radius: 4px;
 }
-.table-container::-webkit-scrollbar-thumb:hover {
-background: rgba(255, 255, 255, 0.4);
-}
-/* DATA TABLE STYLING */
+/* Dynamic Table Styling */
 .data-table {
 width: 100%;
 border-collapse: collapse;
@@ -260,10 +257,7 @@ background-color: rgba(56, 189, 248, 0.2) !important;
 </style>
 </head>
 <body>
-<!-- Header Title -->
-<div class="top-header">
-Attendance Management System
-</div>
+<div class="top-header">Attendance Management System</div>
 <div class="container">
 <!-- Sidebar Navigation -->
 <div class="sidebar">
@@ -275,30 +269,31 @@ Attendance Management System
 <a href="/report" class="nav-btn active">REPORT</a>
 <a href="/login" class="nav-btn">EXIT</a>
 </div>
-<!-- Main Content -->
+<!-- Main Area -->
 <div class="main-content">
 <div class="card-box">
-<!-- Card Title --><div class="card-header">
+<div class="card-header">
 <i class="fa-solid fa-file-invoice"></i> Reporting Panel
 </div>
-<!-- Tabs Navigation -->
+<!-- ALL 5 DETAILED TABS -->
 <div class="tabs-header">
-<button class="tab-btn active" onclick="switchTab('tab1', this)">All Batches Attendance</button>
-<button class="tab-btn" onclick="switchTab('tab2', this)">Batch and Student Attendance</button>
-<button class="tab-btn" onclick="switchTab('tab3', this)">All Batches Attendance with Customized Date</button>
-<button class="tab-btn" onclick="switchTab('tab4', this)">Batch Attendance</button>
+<button class="tab-btn active">All Batches Attendance</button>
+<button class="tab-btn">Morning Batch Student and Teacher Attendance</button>
+<button class="tab-btn">Teacher Details Report</button>
+<button class="tab-btn">Student Details Report</button>
+<button class="tab-btn">Batch Details Report</button>
 </div>
 <div class="tab-content-wrapper">
 <!-- TAB 1: ALL BATCHES ATTENDANCE -->
 <div id="tab1" class="tab-pane active">
 <div class="report-top-bar">
-<div class="report-title">All Batch Attendance</div>
+<div class="report-title">All Batch Attendance Report</div>
 <div class="export-actions">
 <button class="export-btn excel" onclick="exportToExcel('table1', 'All_Batches_Attendance')"><i class="fa-solid fa-file-excel"></i>
 Excel</button>
-<button class="export-btn pdf" onclick="exportToPDF('table1', 'All Batches Attendance')"><i class="fa-solid fa-file-pdf"></i>
+<button class="export-btn pdf" onclick="exportToPDF('table1', 'All_Batches_Attendance')"><i class="fa-solid fa-file-pdf"></i>
 PDF</button>
-<button class="export-btn print" onclick="printTable('table1', 'All Batches Attendance')"><i class="fa-solid fa-print"></i> Print</button>
+<button class="export-btn print" onclick="printTable('table1', 'All_Batches_Attendance')"><i class="fa-solid fa-print"></i> Print</button>
 </div>
 </div>
 <div class="table-container">
@@ -310,51 +305,47 @@ PDF</button>
 <th>Student Name</th>
 <th>Batch Code</th>
 <th>Book</th>
-</tr>
+<th>Batch Time</th></tr>
 </thead>
 <tbody>
-<tr><td>2016-01-02</td><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td></tr>
-<tr><td>2016-01-02</td><td>1123</td><td>Batool</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td></tr>
-<tr><td>2016-01-02</td><td>1124</td><td>Faiza</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td></tr>
-<tr><td>2016-01-02</td><td>1125</td><td>Hafsa</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td></tr>
-<tr><td>2016-01-02</td><td>1126</td><td>Jawad</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td></tr>
-<tr><td>2016-01-02</td><td>1127</td><td>Khalid</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td></tr>
-<tr><td>2016-01-02</td><td>1128</td><td>Munib</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td></tr>
-<tr><td>2016-01-05</td><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td></tr>
-<tr><td>2016-01-05</td><td>1123</td><td>Batool</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td></tr>
-<tr><td>2016-01-05</td><td>1124</td><td>Faiza</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td></tr>
-<tr><td>2016-01-05</td><td>1125</td><td>Hafsa</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td></tr>
-<tr><td>2016-01-05</td><td>1126</td><td>Jawad</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td></tr>
+<tr><td>2016-01-02</td><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td><td>06:40
+AM</td></tr>
+<tr><td>2016-01-02</td><td>1123</td><td>Batool</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td><td>06:40
+AM</td></tr>
+<tr><td>2016-01-02</td><td>1124</td><td>Faiza</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td><td>06:40
+AM</td></tr>
+<tr><td>2016-01-02</td><td>1125</td><td>Hafsa</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td><td>06:40
+AM</td></tr>
 </tbody>
 </table>
 </div>
 </div>
-<!-- TAB 2: BATCH AND STUDENT ATTENDANCE -->
-<div id="tab2" class="tab-pane"><div class="filter-grid">
+<!-- TAB 2: MORNING BATCH ATTENDANCE -->
+<div id="tab2" class="tab-pane">
+<div class="filter-grid">
 <div class="filter-group">
 <label>Select Batch Code</label>
 <select>
-<option value="">IPRO-201601B</option>
-<option value="">IPRO-201504D</option>
+<option value="IPRO-201601B">IPRO-201601B</option>
+<option value="IPRO-201504D">IPRO-201504D</option>
 </select>
 </div>
 <div class="filter-group">
 <label>Select Student Name</label>
 <select>
-<option value="">Basma</option>
-<option value="">Batool</option>
-<option value="">Faiza</option>
+<option value="Basma">Basma</option>
+<option value="Batool">Batool</option>
 </select>
 </div>
 </div>
 <div class="report-top-bar">
-<div class="report-title">Batch and Student Attendance</div>
+<div class="report-title">Morning Batch Student and Teacher Attendance</div>
 <div class="export-actions">
-<button class="export-btn excel" onclick="exportToExcel('table2', 'Batch_and_Student_Attendance')"><i class="fa-solid
-fa-file-excel"></i> Excel</button>
-<button class="export-btn pdf" onclick="exportToPDF('table2', 'Batch and Student Attendance')"><i class="fa-solid fa-file-pdf"></i>
+<button class="export-btn excel" onclick="exportToExcel('table2', 'Morning_Batch_Attendance')"><i class="fa-solid fa-file-excel"></i>
+Excel</button>
+<button class="export-btn pdf" onclick="exportToPDF('table2', 'Morning_Batch_Attendance')"><i class="fa-solid fa-file-pdf"></i>
 PDF</button>
-<button class="export-btn print" onclick="printTable('table2', 'Batch and Student Attendance')"><i class="fa-solid fa-print"></i>
+<button class="export-btn print" onclick="printTable('table2', 'Morning_Batch_Attendance')"><i class="fa-solid fa-print"></i>
 Print</button>
 </div>
 </div>
@@ -369,87 +360,126 @@ Print</button>
 <th>Status</th>
 </tr>
 </thead>
-<tbody>
-<tr><td>2016-01-02</td><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>Present</td></tr>
+<tbody><tr><td>2016-01-02</td><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>Present</td></tr>
 <tr><td>2016-01-05</td><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>Present</td></tr>
 <tr><td>2016-01-07</td><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>Absent</td></tr>
 </tbody>
 </table>
 </div>
 </div>
-<!-- TAB 3: ALL BATCHES ATTENDANCE WITH CUSTOMIZED DATE -->
+<!-- TAB 3: FULL TEACHER DETAILS REPORT (ALL COLUMNS INCLUDED) -->
 <div id="tab3" class="tab-pane">
-<div class="filter-grid">
-<div class="filter-group">
-<label>From Date</label>
-<input type="date" value="2016-01-01">
-</div>
-<div class="filter-group"><label>To Date</label>
-<input type="date" value="2016-01-31">
-</div>
-</div>
 <div class="report-top-bar">
-<div class="report-title">Customized Date Attendance</div>
+<div class="report-title">Teacher Full Details Report</div>
 <div class="export-actions">
-<button class="export-btn excel" onclick="exportToExcel('table3', 'Custom_Date_Attendance')"><i class="fa-solid fa-file-excel"></i>
+<button class="export-btn excel" onclick="exportToExcel('table3', 'Teacher_Details_Report')"><i class="fa-solid fa-file-excel"></i>
 Excel</button>
-<button class="export-btn pdf" onclick="exportToPDF('table3', 'Custom Date Attendance')"><i class="fa-solid fa-file-pdf"></i>
+<button class="export-btn pdf" onclick="exportToPDF('table3', 'Teacher_Details_Report')"><i class="fa-solid fa-file-pdf"></i>
 PDF</button>
-<button class="export-btn print" onclick="printTable('table3', 'Custom Date Attendance')"><i class="fa-solid fa-print"></i>
-Print</button>
+<button class="export-btn print" onclick="printTable('table3', 'Teacher_Details_Report')"><i class="fa-solid fa-print"></i> Print</button>
 </div>
 </div>
 <div class="table-container">
 <table class="data-table" id="table3">
 <thead>
 <tr>
-<th>Attendance Date</th>
-<th>Student Id</th>
-<th>Student Name</th>
-<th>Batch Code</th>
-<th>Book</th>
+<th>Teacher Id</th>
+<th>User Name</th>
+<th>Teacher Name</th>
+<th>Teacher Password</th>
+<th>Teacher Status</th>
+<th>Date</th>
 </tr>
 </thead>
 <tbody>
-<tr><td>2016-01-02</td><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td></tr>
-<tr><td>2016-01-05</td><td>1123</td><td>Batool</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td></tr>
+<tr><td>10002</td><td>ashar</td><td>Sir Ashar</td><td>ash</td><td>true</td><td>21/07/2026</td></tr>
+<tr><td>10003</td><td>sohail</td><td>Sir Sohail</td><td>soh</td><td>true</td><td>22/07/2026</td></tr>
+<tr><td>10004</td><td>farooq</td><td>Sir Farooq</td><td>far</td><td>true</td><td>23/03/2026</td></tr>
 </tbody>
 </table>
 </div>
 </div>
-<!-- TAB 4: BATCH ATTENDANCE -->
+<!-- TAB 4: FULL STUDENT DETAILS REPORT (ALL COLUMNS FROM STUDENT FORM) -->
 <div id="tab4" class="tab-pane">
-<div class="filter-grid">
-<div class="filter-group">
-<label>Select Batch Code</label>
-<select>
-<option value="">IPRO-201601B</option>
-<option value="">IPRO-201505E</option>
-</select>
-</div>
-</div>
 <div class="report-top-bar">
-<div class="report-title">Batch Attendance</div>
+<div class="report-title">Student Full Details Report</div>
 <div class="export-actions">
-<button class="export-btn excel" onclick="exportToExcel('table4', 'Batch_Attendance')"><i class="fa-solid fa-file-excel"></i>
+<button class="export-btn excel" onclick="exportToExcel('table4', 'Student_Details_Report')"><i class="fa-solid fa-file-excel"></i>
 Excel</button>
-<button class="export-btn pdf" onclick="exportToPDF('table4', 'Batch Attendance')"><i class="fa-solid fa-file-pdf"></i> PDF</button>
-<button class="export-btn print" onclick="printTable('table4', 'Batch Attendance')"><i class="fa-solid fa-print"></i> Print</button>
+<button class="export-btn pdf" onclick="exportToPDF('table4', 'Student_Details_Report')"><i class="fa-solid fa-file-pdf"></i>
+PDF</button>
+<button class="export-btn print" onclick="printTable('table4', 'Student_Details_Report')"><i class="fa-solid fa-print"></i> Print</button>
 </div>
-</div><div class="table-container">
+</div>
+<div class="table-container">
 <table class="data-table" id="table4">
 <thead>
 <tr>
-<th>Attendance Date</th>
-<th>Student Id</th>
-<th>Student Name</th>
+<th>Student Id</th><th>Student Name</th>
+<th>Student Batch</th>
+<th>Student Timing</th>
+<th>Student Days</th>
+<th>Student Status</th>
+<th>Total Students</th>
+<th>Semester Name</th>
+<th>Semester Book</th>
+<th>Date</th>
+<th>Teacher Name</th>
+<th>Teacher ID</th>
+</tr>
+</thead>
+<tbody th:if="${teachers}">
+<tr th:each="t : ${teachers}">
+<td th:text="${t.teacherId}"></td>
+<td th:text="${t.userName}"></td>
+<td th:text="${t.teacherName}"></td>
+<td th:text="${t.teacherPassword}"></td>
+<td th:text="${t.teacherStatus}"></td>
+<td th:text="${t.teacherDate}"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- TAB 5: FULL BATCH DETAILS REPORT (ALL COLUMNS FROM BATCH FORM) -->
+<div id="tab5" class="tab-pane">
+<div class="report-top-bar">
+<div class="report-title">Batch Master Full Details Report</div>
+<div class="export-actions">
+<button class="export-btn excel" onclick="exportToExcel('table5', 'Batch_Details_Report')"><i class="fa-solid fa-file-excel"></i>
+Excel</button>
+<button class="export-btn pdf" onclick="exportToPDF('table5', 'Batch_Details_Report')"><i class="fa-solid fa-file-pdf"></i>
+PDF</button>
+<button class="export-btn print" onclick="printTable('table5', 'Batch_Details_Report')"><i class="fa-solid fa-print"></i> Print</button>
+</div>
+</div>
+<div class="table-container">
+<table class="data-table" id="table5">
+<thead>
+<tr>
 <th>Batch Code</th>
-<th>Book</th>
+<th>Batch Days</th>
+<th>Batch Time</th>
+<th>Batch Book</th>
+<th>Teacher Name</th>
+<th>Semester Name</th>
+<th>Date</th>
+<th>Batch Status</th>
 </tr>
 </thead>
 <tbody>
-<tr><td>2016-01-02</td><td>1122</td><td>Basma</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td></tr>
-<tr><td>2016-01-02</td><td>1123</td><td>Batool</td><td>IPRO-201601B</td><td>Working with Cloud Computing</td></tr>
+<tr>
+<td>IPRO-201504D</td><td>MWF</td><td>3-5</td><td>Cloud Computing</td><td>Sir
+Sohail</td><td>HDSE-II</td><td>2026-07-23</td><td>Active</td>
+</tr>
+<tr>
+<td>IPRO-201505E</td><td>MWF</td><td>11-1</td><td>Java Programming</td><td>Sir
+Farooq</td><td>DISM</td><td>2026-07-23</td><td>Active</td>
+</tr>
+<tr>
+<td>IPRO-201506F</td><td>MWF</td><td>1-3</td><td>Web Development</td><td>Sir
+Ashar</td><td>CPISM</td><td>2026-07-23</td><td>Active</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -458,49 +488,62 @@ Excel</button>
 </div>
 </div>
 </div>
-<!-- JavaScript Functions -->
+<!-- Script for Tabs, PDF, Excel & Print -->
 <script>
-// 1. Tab Switching Function
-function switchTab(tabId, element) {
-let panes = document.querySelectorAll('.tab-pane');
-panes.forEach(pane => pane.classList.remove('active'));
-let buttons = document.querySelectorAll('.tab-btn');
-buttons.forEach(btn => btn.classList.remove('active'));
-document.getElementById(tabId).classList.add('active');
-element.classList.add('active');
-}
-// 2. Excel Export Function
-function exportToExcel(tableId, filename) {
-let table = document.getElementById(tableId);
-let wb = XLSX.utils.table_to_book(table, { sheet: "Attendance_Report" });
-XLSX.writeFile(wb, filename + ".xlsx");
-}
-// 3. PDF Export Function
-function exportToPDF(tableId, title) {
-const { jsPDF } = window.jspdf;
-const doc = new jsPDF();
-doc.setFontSize(16);
-doc.text(title, 14, 15);
-doc.autoTable({
-html: '#' + tableId,
-startY: 22,
-theme: 'grid',headStyles: { fillColor: [15, 23, 42] }
+document.addEventListener("DOMContentLoaded", function () {
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+
+    tabButtons.forEach((button, index) => {
+        button.addEventListener('click', function () {
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+
+            tabPanes.forEach(pane => {
+                pane.classList.remove('active');
+                pane.style.display = 'none';
+            });
+
+            if (tabPanes[index]) {
+                tabPanes[index].classList.add('active');
+                tabPanes[index].style.display = 'block';
+            }
+        });
+    });
 });
-doc.save(title.replace(/\s+/g, '_') + '.pdf');
+
+function exportToExcel(tableId, filename) {
+    let table = document.getElementById(tableId);
+    let wb = XLSX.utils.table_to_book(table, { sheet: "Report" });
+    XLSX.writeFile(wb, filename + ".xlsx");
 }
-// 4. Print Function
+
+function exportToPDF(tableId, title) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('l', 'mm', 'a4'); // Landscape orientation for wide tables
+    doc.setFontSize(14);
+    doc.text(title, 14, 15);
+    doc.autoTable({
+        html: '#' + tableId,
+        startY: 22,
+        theme: 'grid',
+        styles: { fontSize: 8 },
+        headStyles: { fillColor: [15, 23, 42] }
+    });
+    doc.save(title.replace(/\s+/g, '_') + '.pdf');
+}
+
 function printTable(tableId, title) {
-let tableHTML = document.getElementById(tableId).outerHTML;
-let printWindow = window.open('', '', 'height=600,width=800');
-printWindow.document.write('<html><head><title>' + title + '</title>');
-printWindow.document.write('<style>table {width:100%; border-collapse:collapse;} th, td {border:1px solid #000; padding:8px; text-align:left;} th
-{background:#f2f2f2;}</style>');
-printWindow.document.write('</head><body>');
-printWindow.document.write('<h2>' + title + '</h2>');
-printWindow.document.write(tableHTML);
-printWindow.document.write('</body></html>');
-printWindow.document.close();
-printWindow.print();
+    let tableHTML = document.getElementById(tableId).outerHTML;
+    let printWindow = window.open('', '', 'height=600,width=900');
+    printWindow.document.write('<html><head><title>' + title + '</title>');
+    printWindow.document.write('<style>table {width:100%; border-collapse:collapse;} th, td {border:1px solid #000; padding:6px; font-size:12px; text-align:left;}</style>');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write('<h2>' + title + '</h2>');
+    printWindow.document.write(tableHTML);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
 }
 </script>
 </body>

@@ -1,8 +1,10 @@
 package com.attendance.repository;
 
-import com.attendance.model.Teacher;
-import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.attendance.model.Teacher;
 
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 Optional<Teacher> findByUsername(String username);
