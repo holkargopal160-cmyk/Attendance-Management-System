@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,9 +20,7 @@ color: #fff;
 min-height: 100vh;
 display: flex;
 flex-direction: column;
-
 }
-/* Top Header Title - Centered & Styled like Photo */
 .top-header {
 width: 100%;
 text-align: center;
@@ -39,7 +37,6 @@ flex: 1;
 padding: 10px 20px 20px 20px;
 gap: 20px;
 }
-/* Sidebar Section */
 .sidebar {
 width: 220px;
 padding: 10px;
@@ -47,7 +44,8 @@ display: flex;
 flex-direction: column;
 gap: 12px;
 }
-.admin-panel-title {color: #94a3b8;
+.admin-panel-title {
+color: #94a3b8;
 font-size: 13px;
 font-weight: 700;
 letter-spacing: 1.5px;
@@ -72,7 +70,6 @@ letter-spacing: 0.5px;
 background: #cbd5e1;
 transform: translateX(3px);
 }
-/* Main Content Container */
 .main-content {
 flex: 1;
 display: flex;
@@ -80,16 +77,14 @@ flex-direction: column;
 gap: 15px;
 overflow: hidden;
 }
-/* NEW BATCH CARD CONTAINER (Sahi Labelling & Div Structure) */
 .card-box {
-width:100%
+width: 100%;
 flex-shrink: 0;
 background: rgba(255, 255, 255, 0.05);
 border: 1px solid rgba(255, 255, 255, 0.1);
 border-radius: 8px;
 box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
 }
-/* New Batch Header Label */
 .card-header {
 background: rgba(255, 255, 255, 0.08);
 padding: 12px 20px;
@@ -101,9 +96,9 @@ gap: 10px;
 color: #ffffff;
 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-.card-body {padding: 20px;
+.card-body {
+padding: 20px;
 }
-/* Label and Input Alignment Grid */
 .form-grid {
 display: grid;
 grid-template-columns: repeat(2, 1fr);
@@ -130,10 +125,6 @@ color: #000;
 font-size: 14px;
 outline: none;
 }
-.form-group input::placeholder {
-color: #64748b;
-}
-/* Action Buttons Row */
 .action-buttons {
 display: flex;
 gap: 25px;
@@ -152,7 +143,8 @@ align-items: center;
 gap: 8px;
 padding: 8px 16px;
 border-radius: 5px;
-transition: 0.2s;}
+transition: 0.2s;
+}
 .btn-add { color: #2ea44f; }
 .btn-remove { color: #f85149; }
 .btn-update { color: #e3b341; }
@@ -161,7 +153,6 @@ transition: 0.2s;}
 .action-btn:hover {
 background: rgba(255, 255, 255, 0.1);
 }
-/* Search Box Container */
 .search-container {
 margin-bottom: 10px;
 display: none;
@@ -176,13 +167,12 @@ color: #fff;
 font-size: 14px;
 outline: none;
 }
-/* Table Container & Custom Borders */
 .table-container {
 width: 100%;
 flex: 1;
 max-height: 400px;
 overflow-x: auto;
-overflow-y auto;
+overflow-y: auto;
 background: rgba(255, 255, 255, 0.03);
 border-radius: 8px;
 padding: 10px;
@@ -221,7 +211,6 @@ background-color: rgba(46, 164, 79, 0.4) !important;
 </style>
 </head>
 <body>
-<!-- Center Title Header -->
 <div class="top-header">
 Attendance Management System
 </div>
@@ -238,18 +227,17 @@ Attendance Management System
 </div>
 <!-- Main Content Section -->
 <div class="main-content">
-<!-- PROPER CARD BOX DIV FOR NEW BATCH -->
 <div class="card-box">
-<!-- Properly Labeled Header -->
 <div class="card-header">
 <i class="fa-solid fa-folder-minus"></i> New Batch
 </div>
 <div class="card-body">
-<!-- Properly Labeled Grid Form -->
+<!-- Spring Boot Form Submission -->
+<form th:action="@{/saveBatch}" th:object="${batch}" method="post" id="batchForm">
 <div class="form-grid">
 <div class="form-group">
 <label>Batch Code</label>
-<select id="batchCode">
+<select th:field="*{batchCode}" id="batchCode" required>
 <option value="">IPRO-201602A....</option>
 <option value="IPRO-201602A">IPRO-201602A</option>
 <option value="IPRO-201602B">IPRO-201602B</option>
@@ -257,21 +245,12 @@ Attendance Management System
 <option value="IPRO-201602D">IPRO-201602D</option>
 <option value="IPRO-201602E">IPRO-201602E</option>
 <option value="IPRO-201602F">IPRO-201602F</option>
-<option value="IPRO-201602G">IPRO-201602G</option>
-<option value="IPRO-201602H">IPRO-201602H</option>
-<option value="IPRO-201602I">IPRO-201602I</option>
-<option value="IPRO-201602J">IPRO-201602J</option>
-<option value="IPRO-201602K">IPRO-201602K</option>
-<option value="IPRO-201602L">IPRO-201602L</option>
-<option value="IPRO-201602M">IPRO-201602M</option>
-<option value="IPRO-201602N">IPRO-201602N</option>
-<option value="IPRO-201602O">IPRO-201602O</option>
 </select>
 </div>
 
 <div class="form-group">
 <label>Batch Days</label>
-<select id="batchDays">
+<select th:field="*{batchDays}" id="batchDays">
 <option value="">Please Select....</option>
 <option value="Monday">Monday</option>
 <option value="Tuesday">Tuesday</option>
@@ -280,17 +259,26 @@ Attendance Management System
 <option value="Friday">Friday</option>
 <option value="Saturday">Saturday</option>
 <option value="Sunday">Sunday</option>
+<option value="MWF">MWF</option>
+<option value="TTS">TTS</option>
+</select>
+</div>
+
+<!-- Batch Time Dropdown Added Here -->
+<div class="form-group">
+<label>Batch Time</label>
+<select th:field="*{batchTime}" id="batchTime">
+<option value="">Please Select Time...</option>
+<option value="09:00 AM - 11:00 AM">09:00 AM - 11:00 AM</option>
+<option value="11:30 AM - 01:30 PM">11:30 AM - 01:30 PM</option>
+<option value="03:30 PM - 05:30 PM">03:30 PM - 05:30 PM</option>
+<option value="06:00 PM - 08:00 PM">06:00 PM - 08:00 PM</option>
 </select>
 </div>
 
 <div class="form-group">
-<label>Batch Time</label>
-<input type="time" id="batchTime" class="form-control" step="300">
-</div>
-
-<div class="form-group">
 <label>Semester Name</label>
-<select id="semesterName">
+<select th:field="*{semesterName}" id="semesterName">
 <option value="">Please Select....</option>
 <option value="Sem-I">Sem-I</option>
 <option value="Sem-II">Sem-II</option>
@@ -298,42 +286,32 @@ Attendance Management System
 <option value="Sem-IV">Sem-IV</option>
 <option value="Sem-V">Sem-V</option>
 <option value="Sem-VI">Sem-VI</option>
-<option value="Sem-VII">Sem-VII</option>
-<option value="Sem-VIII">Sem-VIII</option>
-<option value="Sem-IX">Sem-IX</option>
-<option value="Sem-X">Sem-X</option>
-<optION value="Sem-XI">Sem-XI</option>
-<option value="Sem-XII">Sem-XII</option>
-<option value="Sem-XIII">Sem-XIII</option>
-<option value="Sem-XIV">Sem-XIV</option>
-<option value="Sem-XV">Sem-XV</option>
-<option value="Sem-XVI">Sem-XVI</option>
-<option value="Sem-XVII">Sem-XVII</option>
-<option value="Sem-XVIII">Sem-XVIII</option>
-<option value="Sem-XIV">Sem-XIX</option>
-<option value="Sem-XX">Sem-XX</option>
+<option value="HDSE-II">HDSE-II</option>
+<option value="DISM">DISM</option>
+<option value="CPISM">CPISM</option>
+<option value="ADSE-II">ADSE-II</option>
 </select>
 </div>
 
 <div class="form-group">
 <label>Batch Book</label>
-<input type="batchbook" id="batchBook"placeholder="Enter Book Name"/>
+<input type="text" th:field="*{semesterBook}" id="batchBook" placeholder="Enter Book Name"/>
 </div>
-
 
 <div class="form-group">
 <label>Date</label>
-<input type="date" id="batchDate" value="2026-07-23">
+<input type="date" th:field="*{date}" id="batchDate">
 </div>
 
 <div class="form-group">
 <label>Teacher Name</label>
-<input type="teachername" id="teacherName"Placeholder="Enter Teacher Name"/>
+<input type="text" th:field="*{teacherName}" id="teacherName" placeholder="Enter Teacher Name"/>
 </div>
 
 <div class="form-group">
 <label>Batch Status</label>
-<select id="batchStatus">
+<select th:field="*{batchStatus}" id="batchStatus">
+<option value="Active">Active</option>
 <option value="ON">ON</option>
 <option value="OFF">OFF</option>
 </select>
@@ -341,18 +319,21 @@ Attendance Management System
 </div>
 <!-- Action Buttons -->
 <div class="action-buttons">
-<button class="action-btn btn-add" onclick="addData()"><i class="fa-solid fa-plus"></i> Add</button>
-<button class="action-btn btn-remove" onclick="deleteData()"><i class="fa-solid fa-minus"></i> Remove</button>
-<button class="action-btn btn-update" onclick="updateData()"><i class="fa-solid fa-pen-to-square"></i> Update</button><button class="action-btn btn-clear" onclick="clearForm()"><i class="fa-solid fa-rotate-right"></i> Clear</button>
-<button class="action-btn btn-view" onclick="viewAllData()"><i class="fa-solid fa-globe"></i> View all</button>
+<button type="submit" class="action-btn btn-add"><i class="fa-solid fa-plus"></i> Add</button>
+<button type="button" class="action-btn btn-remove" onclick="deleteRow()"><i class="fa-solid fa-minus"></i> Remove</button>
+<button type="button" class="action-btn btn-update" onclick="updateRow()"><i class="fa-solid fa-pen-to-square"></i> Update</button>
+<button type="reset" class="action-btn btn-clear" onclick="clearForm()"><i class="fa-solid fa-rotate-right"></i> Clear</button>
+<button type="button" class="action-btn btn-view" onclick="viewAllData()"><i class="fa-solid fa-globe"></i> View all</button>
+</div>
+</form>
 </div>
 </div>
-</div>
+
 <!-- Search Bar Container -->
 <div class="search-container" id="searchContainer">
-<input type="text" id="tableSearchInput" class="search-input" onkeyup="searchBatchTable()" placeholder="Search Batch by Code, Days, Time,
-Semester...">
+<input type="text" id="tableSearchInput" class="search-input" onkeyup="searchBatchTable()" placeholder="Search Batch by Code, Days, Time, Semester...">
 </div>
+
 <!-- Data Table Container -->
 <div class="table-container">
 <table class="data-table" id="batchTable">
@@ -369,209 +350,93 @@ Semester...">
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>IPRO-201504D</td>
-<td>MWF</td>
-<td>3-5</td>
-<td>HDSE-II</td>
-<td>gopal</td>
-<td>true</td>
-<td>07/21/2026</td>
-</tr>
-<tr>
-<td>IPRO-201505E</td>
-<td>MWF</td>
-<td>11-1</td>
-<td>DISM</td>
-<td>Fundamental</td>
-<td>gopal</td>
-<td>true</td>
-<td>07/21/2026</td>
-</tr>
-<tr>
-<td>IPRO-201506F</td>
-<td>MWF</td>
-<td>1-3</td>
-<td>CPISM</td>
-<td>Database</td>
-<td>gopal</td>
-<td>true</td>
-<td>07/21/2026</td>
-</tr>
-<tr>
-<td>IPRO-201508H</td>
-<td>TTS</td>
-<td>9-11</td>
-<td>ADSE-II</td>
-<td>Web Tech</td>
-<td>gopal</td>
-<td>true</td>
-<td>07/21/2026</td>
-</tr>
-<tr>
-<td>IPRO-201601B</td>
-<td>TTS</td>
-<td>11-1</td>
-<td>ADSE-II</td><td>Web Tech</td>
-<td>gopal</td>
-<td>true</td>
-<td>07/21/2026</td>
-</tr>
-<tr>
-<td>IPRO-201602C</td>
-<td>TTS</td>
-<td>9-11</td>
-<td>CPISM</td>
-<td>HTML5</td>
-<td>gopal</td>
-<td>true</td>
-<td>07/21/2026</td>
+<!-- Database Data Loop -->
+<tr th:each="b : ${batches}" onclick="selectRow(this)">
+<td th:text="${b.batchCode}"></td>
+<td th:text="${b.batchDays}"></td>
+<td th:text="${b.batchTime}"></td>
+<td th:text="${b.semesterName}"></td>
+<td th:text="${b.semesterBook}"></td>
+<td th:text="${b.teacherName}"></td>
+<td th:text="${b.batchStatus}"></td>
+<td th:text="${b.date}"></td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
-<!-- JavaScript Section -->
+
 <script>
 let selectedBatchRow = null;
-document.addEventListener("DOMContentLoaded", function () {
-attachRowClickListeners();
-});
-// Safe Helper Function: Value lene ke liye
-function getValueSafe(id) {
-let el = document.getElementById(id);
-return el ? el.value : "";
+
+function selectRow(row) {
+    let rows = document.querySelectorAll("#batchTable tbody tr");
+    rows.forEach(r => r.classList.remove("selected-row"));
+    row.classList.add("selected-row");
+    selectedBatchRow = row;
+
+    let cells = row.cells;
+    if (cells.length >= 8) {
+        document.getElementById("batchCode").value = cells[0].innerText.trim();
+        document.getElementById("batchDays").value = cells[1].innerText.trim();
+        document.getElementById("batchTime").value = cells[2].innerText.trim();
+        document.getElementById("semesterName").value = cells[3].innerText.trim();
+        document.getElementById("batchBook").value = cells[4].innerText.trim();
+        document.getElementById("teacherName").value = cells[5].innerText.trim();
+        document.getElementById("batchStatus").value = cells[6].innerText.trim();
+        document.getElementById("batchDate").value = cells[7].innerText.trim();
+    }
 }
-// Safe Helper Function: Value set karne ke liye
-function setValueSafe(id, val) {
-let el = document.getElementById(id);
-if (el) el.value = val;
+
+function deleteRow() {
+    if (selectedBatchRow) {
+        if (confirm("Kya aap is batch record ko hatana chahte hain?")) {
+            selectedBatchRow.remove();
+            clearForm();
+        }
+    } else {
+        alert("Kripya pehle table se kisi row par click karein!");
+    }
 }
-// 1. Table Rows click & Auto fill form inputs
-function attachRowClickListeners() {
-let tableRows = document.querySelectorAll(".data-table tbody tr");
-tableRows.forEach(row => {
-row.onclick = function () {
-tableRows.forEach(r => r.classList.remove("selected-row"));
-this.classList.add("selected-row");
-selectedBatchRow = this;
-let cells = this.cells;
-if (cells.length >= 8) {
-setValueSafe("batchCode", cells[0].innerText.trim());
-setValueSafe("batchDays", cells[1].innerText.trim());
-setValueSafe("batchTime", cells[2].innerText.trim());
-setValueSafe("semesterName", cells[3].innerText.trim());
-setValueSafe("batchBook", cells[4].innerText.trim());
-setValueSafe("teacherName", cells[5].innerText.trim());
-setValueSafe("batchStatus", cells[6].innerText.trim());
-setValueSafe("batchDate", cells[7].innerText.trim());
+
+function updateRow() {
+    if (selectedBatchRow) {
+        selectedBatchRow.cells[0].innerText = document.getElementById("batchCode").value;
+        selectedBatchRow.cells[1].innerText = document.getElementById("batchDays").value;
+        selectedBatchRow.cells[2].innerText = document.getElementById("batchTime").value;
+        selectedBatchRow.cells[3].innerText = document.getElementById("semesterName").value;
+        selectedBatchRow.cells[4].innerText = document.getElementById("batchBook").value;
+        selectedBatchRow.cells[5].innerText = document.getElementById("teacherName").value;
+        selectedBatchRow.cells[6].innerText = document.getElementById("batchStatus").value;
+        selectedBatchRow.cells[7].innerText = document.getElementById("batchDate").value;
+        alert("Batch record successfully update ho gaya!");
+        clearForm();
+    } else {
+        alert("Kripya pehle table se kisi row ko select karein!");
+    }
 }
-};
-});
-}
-// 2. ADD BUTTON FUNCTIONALITY
-function addData() {
-// Inputs se safe value lene ke liye (Backup IDs ke saath)
-let code = getValueSafe("batchCode");
-let days = getValueSafe("batchDays");
-let time = getValueSafe("batchTime");
-let sem = getValueSafe("semesterName");
-// Book Name: pehle 'batchBook' check karega, agar na mile to 'book' ya 'batchBookList'
-let book = getValueSafe("batchBook") || getValueSafe("book") || getValueSafe("batchBookInput");
-// Teacher Name: pehle 'teacherName' check karega, agar na mile to 'teacher'
-let name = getValueSafe("teacherName") || getValueSafe("teacher") || getValueSafe("teacherNameInput");
-let status = getValueSafe("batchStatus");
-let date = getValueSafe("batchDate");
-if (!code) {
-alert("Kripya Batch Code zaroor bharein!");
-return;
-}
-let tbody = document.querySelector(".data-table tbody");
-if (!tbody) {
-alert("Table Body nahi mili!");
-return;
-}
-// Nayi Row banao
-let newRow = document.createElement("tr");
-newRow.innerHTML = `
-<td>${code}</td>
-<td>${days}</td>
-<td>${time}</td>
-<td>${sem}</td>
-<td>${book}</td>
-<td>${name}</td>
-<td>${status}</td>
-<td>${date}</td>
-`;
-tbody.appendChild(newRow);
-alert("Batch Data Table me Add ho gaya hai!");
-clearForm();
-attachRowClickListeners();
-}
-// 3. UPDATE BUTTON FUNCTIONALITY
-function updateData() {
-if (!selectedBatchRow) {
-alert("Pehle table me se koi row select karein!");
-return;
-}
-selectedBatchRow.cells[0].innerText = getValueSafe("batchCode");
-selectedBatchRow.cells[1].innerText = getValueSafe("batchDays");
-selectedBatchRow.cells[2].innerText = getValueSafe("batchTime");
-selectedBatchRow.cells[3].innerText = getValueSafe("semesterName");
-selectedBatchRow.cells[4].innerText = getValueSafe("batchBook");
-selectedBatchRow.cells[5].innerText = getValueSafe("teacherName");
-selectedBatchRow.cells[6].innerText = getValueSafe("batchStatus");
-selectedBatchRow.cells[7].innerText = getValueSafe("batchDate");
-alert("Batch Data Update ho gaya hai!");
-clearForm();
-}
-// 4. CLEAR BUTTON FUNCTIONALITY
+
 function clearForm() {
-setValueSafe("batchCode", "");
-setValueSafe("batchDays", "");
-setValueSafe("batchTime", "");
-setValueSafe("semesterName", "");
-setValueSafe("batchBook", "");
-setValueSafe("teacherName", "");
-setValueSafe("batchStatus", "");setValueSafe("batchDate", "2026-07-23");
-let tableRows = document.querySelectorAll(".data-table tbody tr");
-tableRows.forEach(r => r.classList.remove("selected-row"));
-selectedBatchRow = null;
+    selectedBatchRow = null;
+    let rows = document.querySelectorAll("#batchTable tbody tr");
+    rows.forEach(r => r.classList.remove("selected-row"));
 }
-// 5. VIEW ALL BUTTON FUNCTIONALITY
+
 function viewAllData() {
-let tableContainer = document.querySelector(".table-container");
-let searchContainer = document.getElementById("searchContainer");
-if (tableContainer) {
-if (tableContainer.style.display === "none" || tableContainer.style.display === "") {
-tableContainer.style.display = "block";
-if (searchContainer) searchContainer.style.display = "block";
-} else {
-tableContainer.style.display = "none";
-if (searchContainer) searchContainer.style.display = "none";
+    let searchContainer = document.getElementById("searchContainer");
+    if (searchContainer) {
+        searchContainer.style.display = (searchContainer.style.display === "none" || searchContainer.style.display === "") ? "block" : "none";
+    }
 }
-}
-}
-// 6. LIVE SEARCH FUNCTIONALITY
+
 function searchBatchTable() {
-let filter = getValueSafe("tableSearchInput").toUpperCase();
-let rows = document.querySelectorAll(".data-table tbody tr");
-rows.forEach(row => {
-let text = row.innerText.toUpperCase();
-row.style.display = (text.indexOf(filter) > -1) ? "" : "none";
-});
-}
-// 7. DELETE BUTTON FUNCTIONALITY
-function deleteData() {
-if (selectedBatchRow) {
-if (confirm("Kya aap sach me is row ko delete karna chahte hain?")) {
-selectedBatchRow.remove();
-clearForm();
-}
-} else {
-alert("Pehle remove karne ke liye kisi row par click karein!");
-}
+    let filter = document.getElementById("tableSearchInput").value.toUpperCase();
+    let rows = document.querySelectorAll("#batchTable tbody tr");
+    rows.forEach(row => {
+        let text = row.innerText.toUpperCase();
+        row.style.display = (text.indexOf(filter) > -1) ? "" : "none";
+    });
 }
 </script>
 </body>

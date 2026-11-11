@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Attendance Management System - Teacher</title>
-<!-- FontAwesome icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 *{
@@ -20,7 +19,6 @@ min-height: 100vh;
 display: flex;
 flex-direction: column;
 }
-/* Top Center Title */
 .top-header {
 width: 100%;
 text-align: center;
@@ -37,7 +35,6 @@ flex: 1;
 padding: 10px 20px 20px 20px;
 gap: 20px;
 }
-/* Sidebar Styling */
 .sidebar {
 width: 220px;
 padding: 10px;
@@ -46,7 +43,7 @@ flex-direction: column;
 gap: 12px;
 }
 .admin-panel-title {
-color: #94a3b8;font-size: 13px;
+color: #94a3b8; font-size: 13px;
 font-weight: 700;
 letter-spacing: 1.5px;
 margin-bottom: 8px;
@@ -70,14 +67,12 @@ letter-spacing: 0.5px;
 background: #cbd5e1;
 transform: translateX(3px);
 }
-/* Main Content Area */
 .main-content {
 flex: 1;
 display: flex;
 flex-direction: column;
 gap: 15px;
 }
-/* TEACHER CARD BOX CONTAINER WITH PROPER LABELLING */
 .card-box {
 background: rgba(255, 255, 255, 0.05);
 border: 1px solid rgba(255, 255, 255, 0.1);
@@ -85,7 +80,6 @@ border-radius: 8px;
 box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
 overflow: hidden;
 }
-/* Proper Label Header */
 .card-header {
 background: rgba(255, 255, 255, 0.08);
 padding: 12px 20px;
@@ -98,8 +92,8 @@ color: #ffffff;
 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 .card-body {
-padding: 25px 20px;}
-/* Label and Input Alignment Grid */
+padding: 25px 20px;
+}
 .form-grid {
 display: grid;
 grid-template-columns: repeat(2, 1fr);
@@ -132,7 +126,6 @@ color: #fbbf24;
 font-weight: bold;
 border: none;
 }
-/* Action Buttons Row */
 .action-buttons {
 display: flex;
 gap: 25px;
@@ -149,7 +142,8 @@ cursor: pointer;
 display: flex;
 align-items: center;
 gap: 8px;
-padding: 8px 16px;border-radius: 5px;
+padding: 8px 16px;
+border-radius: 5px;
 transition: 0.2s;
 }
 .btn-add { color: #2ea44f; }
@@ -161,7 +155,6 @@ transition: 0.2s;
 background: rgba(255, 255, 255, 0.1);
 transform: translateY(-2px);
 }
-/* Search Box Container */
 .search-container {
 margin-bottom: 10px;
 display: none;
@@ -176,33 +169,21 @@ color: #fff;
 font-size: 14px;
 outline: none;
 }
-/* Custom Horizontal and Vertical Scrollable Table */
 .table-container {
 width: 100%;
-max-height: 300px
+max-height: 300px;
 overflow: auto;
 background: rgba(255, 255, 255, 0.03);
 border-radius: 8px;
 padding: 10px;
 border: 1px solid rgba(255, 255, 255, 0.1);
-box-sizing:border-box;
-}
-/* Custom Scrollbar */
-.table-container::-webkit-scrollbar {
-width: 8px;
-height: 8px;
-}
-.table-container::-webkit-scrollbar-thumb {
-background: rgba(255, 255, 255, 0.25);
-border-radius: 4px;
-}
-.table-container::-webkit-scrollbar-thumb:hover {
-background: rgba(255, 255, 255, 0.4);
+box-sizing: border-box;
 }
 .data-table {
 width: 100%;
-min-width:1100px
-border-collapse: collapse;text-align: left;
+min-width: 1100px;
+border-collapse: collapse;
+text-align: left;
 font-size: 14px;
 white-space: nowrap;
 }
@@ -223,7 +204,6 @@ padding: 8px 12px;
 }
 .data-table tbody tr {
 cursor: pointer;
-transition: background 0.2s;
 }
 .data-table tbody tr:hover {
 background-color: rgba(56, 189, 248, 0.2) !important;
@@ -234,7 +214,6 @@ background-color: rgba(46, 164, 79, 0.4) !important;
 </style>
 </head>
 <body>
-<!-- Header Title -->
 <div class="top-header">
 Attendance Management System
 </div>
@@ -249,59 +228,64 @@ Attendance Management System
 <a href="/report" class="nav-btn">REPORT</a>
 <a href="/login" class="nav-btn">EXIT</a>
 </div>
+
 <!-- Main Content -->
-<div class="main-content"><!-- PROPER LABELED CARD BOX FOR TEACHER FORM -->
+<div class="main-content">
 <div class="card-box">
 <div class="card-header">
 <i class="fa-solid fa-address-card"></i> New Teacher
 </div>
 <div class="card-body">
+<!-- Form for Database Saving -->
+<form th:action="@{/saveTeacher}" th:object="${teacher}" method="post" id="teacherForm">
 <div class="form-grid">
-<!-- Left Column -->
 <div class="form-group">
 <label>Teacher ID</label>
-<input type="text" id="teacherId" value="10007" class="read-only-id">
+<input type="text" th:field="*{teacherId}" id="teacherId" class="read-only-id" placeholder="ID">
 </div>
 <div class="form-group">
 <label>Teacher Name</label>
-<input type="text" id="teacherName" placeholder="Enter teacher name">
+<input type="text" th:field="*{teacherName}" id="teacherName" placeholder="Enter teacher name" required>
 </div>
 <div class="form-group">
 <label>User Name</label>
-<input type="text" id="userName" placeholder="Enter username">
+<input type="text" th:field="*{userName}" id="userName" placeholder="Enter username" required>
 </div>
 <div class="form-group">
 <label>Password</label>
-<input type="password" id="teacherPassword" placeholder="Enter password">
+<input type="password" th:field="*{teacherPassword}" id="teacherPassword" placeholder="Enter password" required>
 </div>
 <div class="form-group">
 <label>Teacher Status</label>
-<select id="teacherStatus">
+<select th:field="*{teacherStatus}" id="teacherStatus">
 <option value="absent">absent</option>
 <option value="present">present</option>
 </select>
 </div>
 <div class="form-group">
 <label for="teacherDate">Date</label>
-<input type="date" id="teacherDate" name="teacherdate" class="form-control" required>
+<input type="date" th:field="*{date}" id="teacherDate" class="form-control" required>
 </div>
 </div>
-<!-- Action Buttons -->
+<!-- Action Buttons (Add, Remove, Update, Clear, View all) -->
 <div class="action-buttons">
-<button class="action-btn btn-add" onclick="addData()"><i class="fa-solid fa-plus-circle"></i> Add</button>
-<button class="action-btn btn-remove" onclick="deleteData()"><i class="fa-solid fa-minus-circle"></i> Remove</button>
-<button class="action-btn btn-update" onclick="updateData()"><i class="fa-solid fa-pen-to-square"></i> Update</button>
-<button class="action-btn btn-clear" onclick="clearForm()"><i class="fa-solid fa-arrows-rotate"></i> Clear</button>
-<button class="action-btn btn-view" onclick="viewAllData()"><i class="fa-solid fa-bullseye"></i> View all</button>
+<button type="submit" class="action-btn btn-add"><i class="fa-solid fa-plus-circle"></i> Add</button>
+<button type="button" class="action-btn btn-remove" onclick="deleteRow()"><i class="fa-solid fa-minus-circle"></i> Remove</button>
+<button type="button" class="action-btn btn-update" onclick="updateRow()"><i class="fa-solid fa-pen-to-square"></i> Update</button>
+<button type="reset" class="action-btn btn-clear" onclick="clearForm()"><i class="fa-solid fa-arrows-rotate"></i> Clear</button>
+<button type="button" class="action-btn btn-view" onclick="viewAllData()"><i class="fa-solid fa-bullseye"></i> View all</button>
+</div>
+</form>
 </div>
 </div>
-</div>
-<!-- Live Search Bar -->
+
+<!-- Search Bar -->
 <div class="search-container" id="searchContainer">
-<input type="text" id="tableSearchInput" class="search-input" onkeyup="searchTeacherTable()" placeholder="Search Teacher by ID, Name,
-Username or Status...">
-</div><!-- Table Container with Scrollbars -->
-<div class="table-container">
+<input type="text" id="tableSearchInput" class="search-input" onkeyup="searchTeacherTable()" placeholder="Search Teacher by ID, Name, Username or Status...">
+</div>
+
+<!-- Table Container -->
+<div class="container-table table-container">
 <table class="data-table" id="teacherTable">
 <thead>
 <tr>
@@ -314,137 +298,90 @@ Username or Status...">
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>10002</td>
-<td>ashar</td>
-<td>Sir Ashar</td>
-<td>ash</td>
-<td>true</td>
-<td>21/07/2026</td>
-</tr>
-<tr>
-<td>10003</td>
-<td>sohail</td>
-<td>Sir Sohail</td>
-<td>soh</td>
-<td>true</td>
-<td>22/07/2026</td>
-</tr>
-<tr>
-<td>10004</td>
-<td>farooq</td>
-<td>Sir Farooq</td>
-<td>far</td>
-<td>true</td>
-<td>23/03/2026</td>
+<!-- Database Data Loop -->
+<tr th:each="t : ${teachers}" onclick="selectRow(this)">
+<td th:text="${t.teacherId}"></td>
+<td th:text="${t.userName}"></td>
+<td th:text="${t.teacherName}"></td>
+<td th:text="${t.teacherPassword}"></td>
+<td th:text="${t.teacherStatus}"></td>
+<td th:text="${t.date}"></td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
-<!-- JavaScript Functions -->
+
 <script>
-let selectedTeacherRow = null;
-document.addEventListener("DOMContentLoaded", function () {
-attachRowClickListeners();
-});
-// Click row to auto fill fields
-function attachRowClickListeners() {
-let tableRows = document.querySelectorAll("#teacherTable tbody tr");
-tableRows.forEach(row => {
-row.onclick = function () {
-tableRows.forEach(r => r.classList.remove("selected-row"));
-this.classList.add("selected-row");
-selectedTeacherRow = this;let cells = this.cells;
-if (cells.length >= 6) {
-document.getElementById("teacherId").value = cells[0].innerText.trim();
-document.getElementById("userName").value = cells[1].innerText.trim();
-document.getElementById("teacherName").value = cells[2].innerText.trim();
-document.getElementById("teacherPassword").value = cells[3].innerText.trim();
-document.getElementById("teacherStatus").value = cells[4].innerText.trim();
-document.getElementById("teacherDate").value = cells[5].innerText.trim();
+let selectedRow = null;
+
+// Row click karne par form me data auto-fill ho jayega
+function selectRow(row) {
+    let rows = document.querySelectorAll("#teacherTable tbody tr");
+    rows.forEach(r => r.classList.remove("selected-row"));
+    row.classList.add("selected-row");
+    selectedRow = row;
+
+    let cells = row.cells;
+    if(cells.length >= 6) {
+        document.getElementById("teacherId").value = cells[0].innerText.trim();
+        document.getElementById("userName").value = cells[1].innerText.trim();
+        document.getElementById("teacherName").value = cells[2].innerText.trim();
+        document.getElementById("teacherPassword").value = cells[3].innerText.trim();
+        document.getElementById("teacherStatus").value = cells[4].innerText.trim();
+        document.getElementById("teacherDate").value = cells[5].innerText.trim();
+    }
 }
-};
-});
+
+// Remove button click
+function deleteRow() {
+    if(selectedRow) {
+        if(confirm("Kya aap is record ko hatana chahte hain?")) {
+            selectedRow.remove();
+            clearForm();
+        }
+    } else {
+        alert("Kripya pehle table se kisi row par click karein!");
+    }
 }
-// Add Button Function
-function addData() {
-let id = document.getElementById("teacherId").value;
-let uname = document.getElementById("userName").value;
-let name = document.getElementById("teacherName").value;
-let pass = document.getElementById("teacherPassword").value;
-let status = document.getElementById("teacherStatus").value;
-let date = document.getElementById("teacherDate").value;
-if (!name || !uname) {
-alert("Kripya Teacher Name aur User Name fill karein!");
-return;
+
+// Update button click
+function updateRow() {
+    if(selectedRow) {
+        selectedRow.cells[0].innerText = document.getElementById("teacherId").value;
+        selectedRow.cells[1].innerText = document.getElementById("userName").value;
+        selectedRow.cells[2].innerText = document.getElementById("teacherName").value;
+        selectedRow.cells[3].innerText = document.getElementById("teacherPassword").value;
+        selectedRow.cells[4].innerText = document.getElementById("teacherStatus").value;
+        selectedRow.cells[5].innerText = document.getElementById("teacherDate").value;
+        alert("Record successfully update ho gaya!");
+        clearForm();
+    } else {
+        alert("Kripya pehle table se kisi row ko select karein!");
+    }
 }
-let tbody = document.querySelector("#teacherTable tbody");
-let newRow = tbody.insertRow();
-newRow.innerHTML = `<td>${id}</td><td>${uname}</td><td>${name}</td><td>${pass}</td><td>${status}</td><td>${date}</td>`;
-attachRowClickListeners();
-alert("Naya Teacher Successfully Add Ho Gaya Hai!");
-clearForm();
-}
-// Update Button Function
-function updateData() {
-if (selectedTeacherRow === null) {
-alert("Kripya pehle niche table me se kisi Teacher row par click karein!");
-return;
-}
-let id = document.getElementById("teacherId").value;
-let uname = document.getElementById("userName").value;
-let name = document.getElementById("teacherName").value;
-let pass = document.getElementById("teacherPassword").value;
-let status = document.getElementById("teacherStatus").value;
-let date = document.getElementById("teacherDate").value;
-selectedTeacherRow.cells[0].innerText = id;
-selectedTeacherRow.cells[1].innerText = uname;
-selectedTeacherRow.cells[2].innerText = name;
-selectedTeacherRow.cells[3].innerText = pass;
-selectedTeacherRow.cells[4].innerText = status;
-selectedTeacherRow.cells[5].innerText = date;
-alert("Teacher Record Successfully Update Ho Gaya Hai!");
-clearForm();
-}
-// Remove Button Function
-function deleteData() {if (selectedTeacherRow !== null) {
-if (confirm("Kya aap is Teacher record ko remove karna chahte hain?")) {
-selectedTeacherRow.remove();
-clearForm();
-}
-} else {
-alert("Kripya pehle remove karne ke liye kisi Teacher row par click karein!");
-}
-}
-// Clear Button Function
+
 function clearForm() {
-document.getElementById("teacherId").value = "1000" + (Math.floor(Math.random() * 90) + 10);
-document.getElementById("teacherName").value = "";
-document.getElementById("userName").value = "";
-document.getElementById("teacherPassword").value = "";
-document.getElementById("teacherStatus").value = "absent";
-document.getElementById("teacherDate").value = "";
-let tableRows = document.querySelectorAll("#teacherTable tbody tr");
-tableRows.forEach(r => r.classList.remove("selected-row"));
-selectedTeacherRow = null;
+    selectedRow = null;
+    let rows = document.querySelectorAll("#teacherTable tbody tr");
+    rows.forEach(r => r.classList.remove("selected-row"));
 }
-// View All Toggle
+
 function viewAllData() {
-let searchContainer = document.getElementById("searchContainer");
-if (searchContainer) {
-searchContainer.style.display = (searchContainer.style.display === "none" || searchContainer.style.display === "") ? "block" : "none";
+    let searchContainer = document.getElementById("searchContainer");
+    if (searchContainer) {
+        searchContainer.style.display = (searchContainer.style.display === "none" || searchContainer.style.display === "") ? "block" : "none";
+    }
 }
-}
-// Live Table Search
+
 function searchTeacherTable() {
-let filter = document.getElementById("tableSearchInput").value.toUpperCase();
-let rows = document.querySelectorAll("#teacherTable tbody tr");
-rows.forEach(row => {
-let text = row.innerText.toUpperCase();
-row.style.display = text.indexOf(filter) > -1 ? "" : "none";
-});
+    let filter = document.getElementById("tableSearchInput").value.toUpperCase();
+    let rows = document.querySelectorAll("#teacherTable tbody tr");
+    rows.forEach(row => {
+        let text = row.innerText.toUpperCase();
+        row.style.display = text.indexOf(filter) > -1 ? "" : "none";
+    });
 }
 </script>
 </body>

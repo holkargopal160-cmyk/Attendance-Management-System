@@ -1,24 +1,51 @@
 package com.attendance.model;
+
 import jakarta.persistence.*;
+
 @Entity
 @Table(name = "teachers")
 public class Teacher {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
-@Column(nullable = false, unique = true)
-private String username;
-@Column(nullable = false)
-private String password;
-@Column(nullable = false)
-private String name;
-public Teacher() {}
-public Long getId() { return id; }
-public void setId(Long id) { this.id = id; }
-public String getUsername() { return username; }
-public void setUsername(String username) { this.username = username; }
-public String getPassword() { return password; }
-public void setPassword(String password) { this.password = password; }
-public String getName() { return name; }
-public void setName(String name) { this.name = name; }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String teacherId;
+    
+    @Column(nullable = false, unique = true)
+    private String userName;
+
+    @Column(nullable = false)
+    private String teacherPassword;
+
+    @Column(nullable = false)
+    private String teacherName;
+
+    private String teacherStatus;
+    
+    private String date;
+
+    public Teacher() {}
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getTeacherId() { return teacherId; }
+    public void setTeacherId(String teacherId) { this.teacherId = teacherId; }
+
+    public String getUserName() { return userName; }
+    public void setUserName(String userName) { this.userName = userName; }
+
+    public String getTeacherPassword() { return teacherPassword; }
+    public void setTeacherPassword(String teacherPassword) { this.teacherPassword = teacherPassword; }
+
+    public String getTeacherName() { return teacherName; }
+    public void setTeacherName(String teacherName) { this.teacherName = teacherName; }
+
+    public String getTeacherStatus() { return teacherStatus; }
+    public void setTeacherStatus(String teacherStatus) { this.teacherStatus = teacherStatus; }
+
+    public String getDate() { return date; }
+    public void setDate(String date) { this.date = date; }
 }

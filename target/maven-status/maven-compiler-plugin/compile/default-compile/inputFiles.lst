@@ -1,4 +1,8 @@
 /home/gopal/Desktop/Attendance Management System/src/main/java/com/attendance/model/Teacher.java
+/home/gopal/Desktop/Attendance Management System/src/main/java/com/attendance/model/Student.java
 /home/gopal/Desktop/Attendance Management System/src/main/java/com/attendance/controller/AttendanceController.java
+/home/gopal/Desktop/Attendance Management System/src/main/java/com/attendance/model/Batch.java
 /home/gopal/Desktop/Attendance Management System/src/main/java/com/attendance/AttendanceApplication.java
+/home/gopal/Desktop/Attendance Management System/src/main/java/com/attendance/repository/BatchRepository.java
 /home/gopal/Desktop/Attendance Management System/src/main/java/com/attendance/repository/TeacherRepository.java
+/home/gopal/Desktop/Attendance Management System/src/main/java/com/attendance/repository/StudentRepository.java

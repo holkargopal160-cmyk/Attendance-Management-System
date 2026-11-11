@@ -1,4 +1,8 @@
 com/attendance/model/Teacher.class
+com/attendance/model/Student.class
+com/attendance/model/Batch.class
+com/attendance/repository/StudentRepository.class
+com/attendance/repository/BatchRepository.class
 com/attendance/repository/TeacherRepository.class
 com/attendance/controller/AttendanceController.class
 com/attendance/AttendanceApplication.class
